@@ -2,14 +2,23 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Preferences } from '@capacitor/preferences';
-import { Observable, tap } from 'rxjs';
+
+import {
+  Observable,
+  from,
+  switchMap
+} from 'rxjs';
 
 import { API_CONFIG } from '../constants/api.constants';
+
 import {
   LoginSolicitud,
   UsuarioAutenticado
 } from '../models/auth.model';
-import { Respuesta } from '../models/respuesta.model';
+
+import {
+  Respuesta
+} from '../models/respuesta.model';
 
 @Injectable({
   providedIn: 'root'
@@ -40,15 +49,22 @@ export class AuthService {
         credenciales
       )
       .pipe(
-        tap(respuesta => {
+        switchMap(respuesta => {
+
           if (
-            respuesta.exito &&
-            respuesta.valorRetorno
+            !respuesta.exito ||
+            !respuesta.valorRetorno
           ) {
-            void this.guardarSesion(
-              respuesta.valorRetorno
+            return from(
+              Promise.resolve(respuesta)
             );
           }
+
+          return from(
+            this.guardarSesion(
+              respuesta.valorRetorno
+            ).then(() => respuesta)
+          );
         })
       );
   }
@@ -68,7 +84,9 @@ export class AuthService {
     });
   }
 
-  async obtenerToken(): Promise<string | null> {
+  async obtenerToken():
+    Promise<string | null> {
+
     const resultado =
       await Preferences.get({
         key: this.tokenKey
@@ -94,16 +112,22 @@ export class AuthService {
         resultado.value
       ) as UsuarioAutenticado;
     } catch {
-      await this.cerrarSesion();
+      await this.limpiarSesion();
       return null;
     }
   }
 
-  async estaAutenticado(): Promise<boolean> {
-    const token = await this.obtenerToken();
-    const usuario = await this.obtenerUsuario();
+  async estaAutenticado():
+    Promise<boolean> {
+
+    const token =
+      await this.obtenerToken();
+
+    const usuario =
+      await this.obtenerUsuario();
 
     if (!token || !usuario) {
+      await this.limpiarSesion();
       return false;
     }
 
@@ -111,7 +135,9 @@ export class AuthService {
       new Date(usuario.expiraEn);
 
     if (
-      Number.isNaN(fechaExpiracion.getTime()) ||
+      Number.isNaN(
+        fechaExpiracion.getTime()
+      ) ||
       fechaExpiracion <= new Date()
     ) {
       await this.limpiarSesion();
@@ -121,14 +147,21 @@ export class AuthService {
     return true;
   }
 
-  async esAdministrador(): Promise<boolean> {
+  async esAdministrador():
+    Promise<boolean> {
+
     const usuario =
       await this.obtenerUsuario();
 
-    return usuario?.rol === 'Administrador';
+    return (
+      usuario?.rol ===
+      'Administrador'
+    );
   }
 
-  async cerrarSesion(): Promise<void> {
+  async cerrarSesion():
+    Promise<void> {
+
     await this.limpiarSesion();
 
     await this.router.navigateByUrl(
@@ -139,7 +172,9 @@ export class AuthService {
     );
   }
 
-  private async limpiarSesion(): Promise<void> {
+  private async limpiarSesion():
+    Promise<void> {
+
     await Preferences.remove({
       key: this.tokenKey
     });
