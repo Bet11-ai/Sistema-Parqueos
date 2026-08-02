@@ -1,0 +1,465 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-button
+      slot="start"
+      fill="clear"
+      class="back-button"
+      (click)="regresar()">
+
+      <ion-icon
+        name="arrow-back-outline"
+        slot="icon-only">
+      </ion-icon>
+
+    </ion-button>
+
+    <ion-title>Clientes</ion-title>
+
+    <ion-button
+      slot="end"
+      fill="clear"
+      class="refresh-button"
+      (click)="cargarClientes()">
+
+      <ion-icon
+        name="refresh-outline"
+        slot="icon-only">
+      </ion-icon>
+
+    </ion-button>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <main class="clientes-page">
+
+    <section class="page-heading">
+
+      <div>
+        <p class="eyebrow">
+          ADMINISTRACIÓN
+        </p>
+
+        <h1>Gestión de clientes</h1>
+
+        <p>
+          Registre, consulte y actualice los clientes
+          del sistema de parqueos.
+        </p>
+      </div>
+
+      <ion-button
+        class="new-button"
+        (click)="abrirFormularioNuevo()">
+
+        <ion-icon
+          name="add-outline"
+          slot="start">
+        </ion-icon>
+
+        Nuevo cliente
+
+      </ion-button>
+
+    </section>
+
+    <section class="summary-grid">
+
+      <article class="summary-card">
+        <div class="summary-icon">
+          <ion-icon name="people-outline"></ion-icon>
+        </div>
+
+        <div>
+          <span>Total clientes</span>
+          <strong>{{ clientes.length }}</strong>
+        </div>
+      </article>
+
+      <article class="summary-card">
+        <div class="summary-icon active">
+          <ion-icon
+            name="checkmark-circle-outline">
+          </ion-icon>
+        </div>
+
+        <div>
+          <span>Activos</span>
+          <strong>{{ totalActivos }}</strong>
+        </div>
+      </article>
+
+      <article class="summary-card">
+        <div class="summary-icon inactive">
+          <ion-icon
+            name="close-circle-outline">
+          </ion-icon>
+        </div>
+
+        <div>
+          <span>Inactivos</span>
+          <strong>{{ totalInactivos }}</strong>
+        </div>
+      </article>
+
+    </section>
+
+    <section
+      class="form-panel"
+      *ngIf="mostrarFormulario">
+
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">
+            {{
+              modoEdicion
+                ? 'MODIFICACIÓN'
+                : 'NUEVO REGISTRO'
+            }}
+          </p>
+
+          <h2>
+            {{
+              modoEdicion
+                ? 'Editar cliente'
+                : 'Registrar cliente'
+            }}
+          </h2>
+        </div>
+
+        <ion-button
+          fill="clear"
+          class="close-button"
+          (click)="cancelarFormulario()">
+
+          <ion-icon
+            name="close-circle-outline"
+            slot="icon-only">
+          </ion-icon>
+
+        </ion-button>
+      </div>
+
+      <div class="form-grid">
+
+        <div class="form-field">
+          <label>Nombre *</label>
+
+          <ion-item lines="none">
+            <ion-icon
+              name="person-outline"
+              slot="start">
+            </ion-icon>
+
+            <ion-input
+              name="nombre"
+              placeholder="Nombre del cliente"
+              [(ngModel)]="formulario.nombre">
+            </ion-input>
+          </ion-item>
+        </div>
+
+        <div class="form-field">
+          <label>Apellidos *</label>
+
+          <ion-item lines="none">
+            <ion-icon
+              name="person-outline"
+              slot="start">
+            </ion-icon>
+
+            <ion-input
+              name="apellidos"
+              placeholder="Apellidos del cliente"
+              [(ngModel)]="formulario.apellidos">
+            </ion-input>
+          </ion-item>
+        </div>
+
+        <div class="form-field">
+          <label>Cédula *</label>
+
+          <ion-item lines="none">
+            <ion-icon
+              name="person-outline"
+              slot="start">
+            </ion-icon>
+
+            <ion-input
+              name="cedula"
+              placeholder="Número de cédula"
+              [(ngModel)]="formulario.cedula">
+            </ion-input>
+          </ion-item>
+        </div>
+
+        <div class="form-field">
+          <label>Teléfono</label>
+
+          <ion-item lines="none">
+            <ion-icon
+              name="call-outline"
+              slot="start">
+            </ion-icon>
+
+            <ion-input
+              type="tel"
+              name="telefono"
+              placeholder="Número telefónico"
+              [(ngModel)]="formulario.telefono">
+            </ion-input>
+          </ion-item>
+        </div>
+
+        <div class="form-field form-field-wide">
+          <label>Correo electrónico</label>
+
+          <ion-item lines="none">
+            <ion-icon
+              name="mail-outline"
+              slot="start">
+            </ion-icon>
+
+            <ion-input
+              type="email"
+              name="correo"
+              placeholder="correo@ejemplo.com"
+              [(ngModel)]="formulario.correo">
+            </ion-input>
+          </ion-item>
+        </div>
+
+        <div
+          class="form-field status-field"
+          *ngIf="modoEdicion">
+
+          <label>Estado del cliente</label>
+
+          <ion-item lines="none">
+            <ion-label>
+              {{
+                formulario.activo
+                  ? 'Cliente activo'
+                  : 'Cliente inactivo'
+              }}
+            </ion-label>
+
+            <ion-toggle
+              [(ngModel)]="formulario.activo">
+            </ion-toggle>
+          </ion-item>
+
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+
+        <ion-button
+          fill="outline"
+          class="cancel-button"
+          [disabled]="guardando"
+          (click)="cancelarFormulario()">
+
+          Cancelar
+
+        </ion-button>
+
+        <ion-button
+          class="save-button"
+          [disabled]="guardando"
+          (click)="guardarCliente()">
+
+          <ion-spinner
+            *ngIf="guardando"
+            name="crescent">
+          </ion-spinner>
+
+          <ion-icon
+            *ngIf="!guardando"
+            name="save-outline"
+            slot="start">
+          </ion-icon>
+
+          <span *ngIf="!guardando">
+            {{
+              modoEdicion
+                ? 'Guardar cambios'
+                : 'Registrar cliente'
+            }}
+          </span>
+
+        </ion-button>
+
+      </div>
+
+    </section>
+
+    <section class="list-panel">
+
+      <div class="list-toolbar">
+
+        <div>
+          <h2>Clientes registrados</h2>
+
+          <p>
+            {{
+              clientesFiltrados.length
+            }}
+            resultado(s)
+          </p>
+        </div>
+
+        <ion-searchbar
+          placeholder="Buscar por nombre, cédula o correo"
+          debounce="250"
+          [(ngModel)]="textoBusqueda"
+          (ionInput)="filtrarClientes()">
+        </ion-searchbar>
+
+      </div>
+
+      <div
+        class="loading-state"
+        *ngIf="cargando">
+
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Cargando clientes...</p>
+
+      </div>
+
+      <div
+        class="empty-state"
+        *ngIf="
+          !cargando &&
+          clientesFiltrados.length === 0
+        ">
+
+        <ion-icon name="people-outline"></ion-icon>
+
+        <h3>No se encontraron clientes</h3>
+
+        <p>
+          Registre un cliente nuevo o cambie
+          el criterio de búsqueda.
+        </p>
+
+      </div>
+
+      <div
+        class="clients-grid"
+        *ngIf="
+          !cargando &&
+          clientesFiltrados.length > 0
+        ">
+
+        <article
+          class="client-card"
+          *ngFor="let cliente of clientesFiltrados"
+          [class.client-inactive]="!cliente.activo">
+
+          <div class="client-card-header">
+
+            <div class="client-avatar">
+              {{
+                cliente.nombre.charAt(0)
+              }}{{
+                cliente.apellidos.charAt(0)
+              }}
+            </div>
+
+            <div class="client-title">
+              <h3>
+                {{ cliente.nombre }}
+                {{ cliente.apellidos }}
+              </h3>
+
+              <ion-badge
+                [class.active-badge]="cliente.activo"
+                [class.inactive-badge]="!cliente.activo">
+
+                {{
+                  cliente.activo
+                    ? 'Activo'
+                    : 'Inactivo'
+                }}
+
+              </ion-badge>
+            </div>
+
+          </div>
+
+          <div class="client-information">
+
+            <div class="information-row">
+              <span>Cédula</span>
+              <strong>{{ cliente.cedula }}</strong>
+            </div>
+
+            <div class="information-row">
+              <span>Teléfono</span>
+              <strong>
+                {{
+                  cliente.telefono ||
+                  'No registrado'
+                }}
+              </strong>
+            </div>
+
+            <div class="information-row">
+              <span>Correo</span>
+              <strong>
+                {{
+                  cliente.correo ||
+                  'No registrado'
+                }}
+              </strong>
+            </div>
+
+          </div>
+
+          <div class="client-actions">
+
+            <ion-button
+              fill="outline"
+              class="edit-button"
+              (click)="editarCliente(cliente)">
+
+              <ion-icon
+                name="create-outline"
+                slot="start">
+              </ion-icon>
+
+              Editar
+
+            </ion-button>
+
+            <ion-button
+              fill="clear"
+              class="delete-button"
+              [disabled]="!cliente.activo"
+              (click)="desactivarCliente(cliente)">
+
+              <ion-icon
+                name="trash-outline"
+                slot="start">
+              </ion-icon>
+
+              Desactivar
+
+            </ion-button>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</ion-content>

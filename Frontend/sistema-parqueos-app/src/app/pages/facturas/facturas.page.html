@@ -1,0 +1,395 @@
+<ion-content [fullscreen]="true">
+
+  <main class="facturas-page">
+
+    <section class="page-heading">
+
+      <div>
+        <p class="eyebrow">
+          FACTURACIÓN
+        </p>
+
+        <h1>Consulta de facturas</h1>
+
+        <p>
+          Consulte el historial de cobros generados
+          por las salidas de vehículos.
+        </p>
+      </div>
+
+      <ion-button
+        fill="outline"
+        class="refresh-main-button"
+        [disabled]="cargando"
+        (click)="cargarFacturas()">
+
+        <ion-icon
+          name="refresh-outline"
+          slot="start">
+        </ion-icon>
+
+        Actualizar
+
+      </ion-button>
+
+    </section>
+
+    <section class="summary-grid">
+
+      <article class="summary-card">
+
+        <div class="summary-icon total-icon">
+          <ion-icon
+            name="document-text-outline">
+          </ion-icon>
+        </div>
+
+        <div>
+          <span>Total de facturas</span>
+
+          <strong>
+            {{ facturas.length }}
+          </strong>
+        </div>
+
+      </article>
+
+      <article class="summary-card">
+
+        <div class="summary-icon today-icon">
+          <ion-icon
+            name="calendar-outline">
+          </ion-icon>
+        </div>
+
+        <div>
+          <span>Facturas de hoy</span>
+
+          <strong>
+            {{ facturasHoy }}
+          </strong>
+        </div>
+
+      </article>
+
+      <article class="summary-card">
+
+        <div class="summary-icon cash-icon">
+          <ion-icon
+            name="cash-outline">
+          </ion-icon>
+        </div>
+
+        <div>
+          <span>Facturación de hoy</span>
+
+          <strong class="money-value">
+            {{
+              formatearMoneda(
+                facturacionHoy
+              )
+            }}
+          </strong>
+        </div>
+
+      </article>
+
+      <article class="summary-card">
+
+        <div class="summary-icon revenue-icon">
+          <ion-icon
+            name="trending-up-outline">
+          </ion-icon>
+        </div>
+
+        <div>
+          <span>Total facturado</span>
+
+          <strong class="money-value">
+            {{
+              formatearMoneda(
+                totalFacturado
+              )
+            }}
+          </strong>
+        </div>
+
+      </article>
+
+    </section>
+
+    <section class="list-panel">
+
+      <div class="list-toolbar">
+
+        <div>
+          <p class="panel-eyebrow">
+            HISTORIAL
+          </p>
+
+          <h2>Facturas registradas</h2>
+
+          <span>
+            {{ facturasFiltradas.length }}
+            resultado(s)
+          </span>
+        </div>
+
+        <div class="search-actions">
+
+          <ion-searchbar
+            placeholder="Buscar factura, placa o parqueo"
+            debounce="250"
+            [value]="textoBusqueda"
+            (ionInput)="
+              textoBusqueda =
+                $any($event.target).value || '';
+              filtrarFacturas()
+            ">
+          </ion-searchbar>
+
+          <ion-button
+            fill="clear"
+            class="refresh-button"
+            (click)="cargarFacturas()">
+
+            <ion-icon
+              name="refresh-outline"
+              slot="icon-only">
+            </ion-icon>
+
+          </ion-button>
+
+        </div>
+
+      </div>
+
+      <div
+        class="loading-state"
+        *ngIf="cargando">
+
+        <ion-spinner name="crescent"></ion-spinner>
+
+        <p>
+          Cargando facturas...
+        </p>
+
+      </div>
+
+      <div
+        class="empty-state"
+        *ngIf="
+          !cargando &&
+          facturasFiltradas.length === 0
+        ">
+
+        <ion-icon
+          name="document-text-outline">
+        </ion-icon>
+
+        <h3>
+          No se encontraron facturas
+        </h3>
+
+        <p>
+          Las facturas se generan automáticamente
+          cuando se registra la salida de un vehículo.
+        </p>
+
+      </div>
+
+      <div
+        class="invoices-grid"
+        *ngIf="
+          !cargando &&
+          facturasFiltradas.length > 0
+        ">
+
+        <article
+          class="invoice-card"
+          *ngFor="
+            let factura of facturasFiltradas
+          ">
+
+          <div class="invoice-header">
+
+            <div class="invoice-icon">
+              <ion-icon
+                name="document-text-outline">
+              </ion-icon>
+            </div>
+
+            <div class="invoice-title">
+
+              <h3>
+                Factura #{{ factura.facturaId }}
+              </h3>
+
+              <p>
+                Ingreso #{{ factura.ingresoId }}
+              </p>
+
+            </div>
+
+            <ion-badge class="invoice-badge">
+              Pagada
+            </ion-badge>
+
+          </div>
+
+          <div class="vehicle-section">
+
+            <div class="vehicle-icon">
+              <ion-icon
+                name="car-sport-outline">
+              </ion-icon>
+            </div>
+
+            <div>
+              <strong>
+                {{ factura.placa }}
+              </strong>
+
+              <span>
+                {{ factura.tipoVehiculo }}
+              </span>
+            </div>
+
+          </div>
+
+          <div class="amount-section">
+
+            <span>Monto total</span>
+
+            <strong>
+              {{
+                formatearMoneda(
+                  factura.montoTotal
+                )
+              }}
+            </strong>
+
+            <small>
+              {{ factura.horasCobradas }}
+              hora(s) cobradas
+            </small>
+
+          </div>
+
+          <div class="invoice-information">
+
+            <div>
+              <ion-icon
+                name="business-outline">
+              </ion-icon>
+
+              <span>Parqueo</span>
+
+              <strong>
+                {{ factura.nombreParqueo }}
+              </strong>
+            </div>
+
+            <div>
+              <ion-icon
+                name="location-outline">
+              </ion-icon>
+
+              <span>Espacio</span>
+
+              <strong>
+                {{ factura.numeroEspacio }}
+              </strong>
+            </div>
+
+            <div>
+              <ion-icon
+                name="calendar-outline">
+              </ion-icon>
+
+              <span>Fecha</span>
+
+              <strong>
+                {{
+                  formatearFecha(
+                    factura.fechaFactura
+                  )
+                }}
+              </strong>
+            </div>
+
+            <div>
+              <ion-icon
+                name="time-outline">
+              </ion-icon>
+
+              <span>Duración</span>
+
+              <strong>
+                {{ factura.horasCobradas }}
+                hora(s)
+              </strong>
+            </div>
+
+          </div>
+
+          <ion-button
+            expand="block"
+            fill="outline"
+            class="detail-button"
+            (click)="verDetalle(factura)">
+
+            <ion-icon
+              name="eye-outline"
+              slot="start">
+            </ion-icon>
+
+            Ver detalle
+
+          </ion-button>
+
+        </article>
+
+      </div>
+
+    </section>
+
+    <section class="billing-summary">
+
+      <div>
+        <span>Promedio por factura</span>
+
+        <strong>
+          {{
+            formatearMoneda(
+              promedioFactura
+            )
+          }}
+        </strong>
+      </div>
+
+      <div>
+        <span>Total de movimientos cobrados</span>
+
+        <strong>
+          {{ facturas.length }}
+        </strong>
+      </div>
+
+      <div>
+        <span>Facturación acumulada</span>
+
+        <strong>
+          {{
+            formatearMoneda(
+              totalFacturado
+            )
+          }}
+        </strong>
+      </div>
+
+    </section>
+
+  </main>
+
+</ion-content>

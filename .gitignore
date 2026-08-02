@@ -1,0 +1,30 @@
+# Visual Studio
+.vs/
+**/.vs/
+*.user
+*.suo
+
+# .NET
+**/bin/
+**/obj/
+
+# Node / Angular / Ionic
+**/node_modules/
+**/.angular/
+**/dist/
+**/www/
+
+# Capacitor
+**/android/app/build/
+**/android/.gradle/
+**/ios/Pods/
+
+# Logs
+*.log
+
+# Sistema operativo
+Thumbs.db
+.DS_Store
+
+# VS Code
+**/.vscode/settings.json

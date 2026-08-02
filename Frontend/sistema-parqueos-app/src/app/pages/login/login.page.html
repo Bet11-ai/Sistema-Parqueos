@@ -1,0 +1,127 @@
+<ion-content [fullscreen]="true">
+
+  <div class="login-page">
+
+    <div class="login-decoration decoration-one"></div>
+    <div class="login-decoration decoration-two"></div>
+
+    <section class="login-card">
+
+      <div class="brand-icon">
+        <ion-icon
+          name="car-sport-outline">
+        </ion-icon>
+      </div>
+
+      <header class="login-header">
+        <p class="eyebrow">
+          SISTEMA ADMINISTRATIVO
+        </p>
+
+        <h1>Gestión de Parqueos</h1>
+
+        <p class="subtitle">
+          Ingrese sus credenciales para continuar
+        </p>
+      </header>
+
+      <form
+        class="login-form"
+        (ngSubmit)="iniciarSesion()">
+
+        <label class="field-label">
+          Correo electrónico
+        </label>
+
+        <ion-item
+          lines="none"
+          class="login-field">
+
+          <ion-icon
+            name="mail-outline"
+            slot="start">
+          </ion-icon>
+
+          <ion-input
+            type="email"
+            name="correo"
+            autocomplete="email"
+            placeholder="admin@parqueos.com"
+            [(ngModel)]="credenciales.correo">
+          </ion-input>
+
+        </ion-item>
+
+        <label class="field-label">
+          Contraseña
+        </label>
+
+        <ion-item
+          lines="none"
+          class="login-field">
+
+          <ion-icon
+            name="lock-closed-outline"
+            slot="start">
+          </ion-icon>
+
+          <ion-input
+            [type]="
+              mostrarContrasena
+                ? 'text'
+                : 'password'
+            "
+            name="contrasena"
+            autocomplete="current-password"
+            placeholder="Ingrese su contraseña"
+            [(ngModel)]="credenciales.contrasena">
+          </ion-input>
+
+          <ion-button
+            type="button"
+            fill="clear"
+            slot="end"
+            class="password-button"
+            (click)="alternarContrasena()">
+
+            <ion-icon
+              [name]="
+                mostrarContrasena
+                  ? 'eye-off-outline'
+                  : 'eye-outline'
+              ">
+            </ion-icon>
+
+          </ion-button>
+
+        </ion-item>
+
+        <ion-button
+          type="submit"
+          expand="block"
+          class="login-button"
+          [disabled]="procesando">
+
+          <ion-spinner
+            *ngIf="procesando"
+            name="crescent">
+          </ion-spinner>
+
+          <span *ngIf="!procesando">
+            Iniciar sesión
+          </span>
+
+        </ion-button>
+
+      </form>
+
+      <footer class="login-footer">
+        <span class="security-dot"></span>
+        Acceso protegido con autenticación JWT
+      </footer>
+
+    </section>
+
+  </div>
+
+</ion-content>

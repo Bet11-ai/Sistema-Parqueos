@@ -1,0 +1,1068 @@
+<ion-content [fullscreen]="true">
+
+  <main class="parqueos-page">
+
+    <!-- ENCABEZADO -->
+    <section class="page-heading">
+
+      <div>
+        <p class="eyebrow">
+          ADMINISTRACIÓN
+        </p>
+
+        <h1>Gestión de parqueos</h1>
+
+        <p>
+          Administre los parqueos y sus espacios
+          disponibles.
+        </p>
+      </div>
+
+      <ion-button
+        class="new-parking-button"
+        (click)="abrirFormularioParqueoNuevo()">
+
+        <ion-icon
+          name="add-outline"
+          slot="start">
+        </ion-icon>
+
+        Nuevo parqueo
+
+      </ion-button>
+
+    </section>
+
+    <!-- RESUMEN GENERAL -->
+    <section class="summary-grid">
+
+      <article class="summary-card">
+
+        <div class="summary-icon parking-icon">
+          <ion-icon name="business-outline"></ion-icon>
+        </div>
+
+        <div>
+          <span>Total de parqueos</span>
+
+          <strong>
+            {{ parqueos.length }}
+          </strong>
+        </div>
+
+      </article>
+
+      <article class="summary-card">
+
+        <div class="summary-icon active-icon">
+          <ion-icon
+            name="checkmark-circle-outline">
+          </ion-icon>
+        </div>
+
+        <div>
+          <span>Parqueos activos</span>
+
+          <strong>
+            {{ totalParqueosActivos }}
+          </strong>
+        </div>
+
+      </article>
+
+      <article class="summary-card">
+
+        <div class="summary-icon capacity-icon">
+          <ion-icon name="location-outline"></ion-icon>
+        </div>
+
+        <div>
+          <span>Capacidad total</span>
+
+          <strong>
+            {{ capacidadTotal }}
+          </strong>
+        </div>
+
+      </article>
+
+    </section>
+
+    <!-- FORMULARIO PARQUEO -->
+    <section
+      class="form-panel parking-form-panel"
+      *ngIf="mostrarFormularioParqueo">
+
+      <div class="panel-heading">
+
+        <div>
+          <p class="panel-eyebrow">
+            {{
+              modoEdicionParqueo
+                ? 'MODIFICACIÓN'
+                : 'NUEVO REGISTRO'
+            }}
+          </p>
+
+          <h2>
+            {{
+              modoEdicionParqueo
+                ? 'Editar parqueo'
+                : 'Registrar parqueo'
+            }}
+          </h2>
+        </div>
+
+        <ion-button
+          fill="clear"
+          class="close-button"
+          (click)="cancelarFormularioParqueo()">
+
+          <ion-icon
+            name="close-circle-outline"
+            slot="icon-only">
+          </ion-icon>
+
+        </ion-button>
+
+      </div>
+
+      <form
+        [formGroup]="formularioParqueo"
+        (ngSubmit)="guardarParqueo()">
+
+        <div class="form-grid">
+
+          <!-- NOMBRE -->
+          <div class="form-field">
+
+            <label>
+              Nombre del parqueo *
+            </label>
+
+            <ion-item
+              lines="none"
+              [class.invalid-field]="
+                campoParqueoInvalido(
+                  'nombreParqueo'
+                )
+              ">
+
+              <ion-icon
+                name="business-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-input
+                formControlName="nombreParqueo"
+                maxlength="150"
+                placeholder="Parqueo Central">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              class="validation-message"
+              *ngIf="
+                campoParqueoInvalido(
+                  'nombreParqueo'
+                )
+              ">
+
+              El nombre del parqueo es obligatorio.
+
+            </small>
+
+          </div>
+
+          <!-- TELÉFONO -->
+          <div class="form-field">
+
+            <label>
+              Teléfono
+            </label>
+
+            <ion-item lines="none">
+
+              <ion-icon
+                name="call-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-input
+                type="tel"
+                formControlName="telefono"
+                maxlength="25"
+                placeholder="2222-2222">
+              </ion-input>
+
+            </ion-item>
+
+          </div>
+
+          <!-- DIRECCIÓN -->
+          <div class="form-field form-field-wide">
+
+            <label>
+              Dirección *
+            </label>
+
+            <ion-item
+              lines="none"
+              [class.invalid-field]="
+                campoParqueoInvalido(
+                  'direccion'
+                )
+              ">
+
+              <ion-icon
+                name="location-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-input
+                formControlName="direccion"
+                maxlength="250"
+                placeholder="Dirección del parqueo">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              class="validation-message"
+              *ngIf="
+                campoParqueoInvalido(
+                  'direccion'
+                )
+              ">
+
+              La dirección es obligatoria.
+
+            </small>
+
+          </div>
+
+          <!-- CAPACIDAD -->
+          <div class="form-field">
+
+            <label>
+              Capacidad total *
+            </label>
+
+            <ion-item
+              lines="none"
+              [class.invalid-field]="
+                campoParqueoInvalido(
+                  'capacidadTotal'
+                )
+              ">
+
+              <ion-icon
+                name="location-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-input
+                type="number"
+                min="1"
+                formControlName="capacidadTotal"
+                placeholder="20">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              class="validation-message"
+              *ngIf="
+                campoParqueoInvalido(
+                  'capacidadTotal'
+                )
+              ">
+
+              La capacidad debe ser mayor que cero.
+
+            </small>
+
+          </div>
+
+          <!-- ESTADO -->
+          <div
+            class="form-field status-field"
+            *ngIf="modoEdicionParqueo">
+
+            <label>
+              Estado del parqueo
+            </label>
+
+            <ion-item lines="none">
+
+              <ion-label>
+                {{
+                  formularioParqueo
+                    .get('activo')
+                    ?.value
+                    ? 'Parqueo activo'
+                    : 'Parqueo inactivo'
+                }}
+              </ion-label>
+
+              <ion-toggle
+                formControlName="activo">
+              </ion-toggle>
+
+            </ion-item>
+
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+
+          <ion-button
+            type="button"
+            fill="outline"
+            class="cancel-button"
+            [disabled]="guardandoParqueo"
+            (click)="cancelarFormularioParqueo()">
+
+            Cancelar
+
+          </ion-button>
+
+          <ion-button
+            type="submit"
+            class="save-parking-button"
+            [disabled]="guardandoParqueo">
+
+            <ion-spinner
+              *ngIf="guardandoParqueo"
+              name="crescent">
+            </ion-spinner>
+
+            <ion-icon
+              *ngIf="!guardandoParqueo"
+              name="save-outline"
+              slot="start">
+            </ion-icon>
+
+            <span *ngIf="!guardandoParqueo">
+              {{
+                modoEdicionParqueo
+                  ? 'Guardar cambios'
+                  : 'Registrar parqueo'
+              }}
+            </span>
+
+          </ion-button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <section class="management-grid">
+
+      <!-- LISTA DE PARQUEOS -->
+      <article class="main-panel parking-list-panel">
+
+        <div class="list-toolbar">
+
+          <div>
+            <p class="panel-eyebrow cyan-text">
+              PARQUEOS
+            </p>
+
+            <h2>Parqueos registrados</h2>
+
+            <span>
+              {{ parqueosFiltrados.length }}
+              resultado(s)
+            </span>
+          </div>
+
+          <div class="toolbar-actions">
+
+            <ion-searchbar
+              placeholder="Buscar parqueo o dirección"
+              debounce="250"
+              [value]="textoBusquedaParqueo"
+              (ionInput)="
+                textoBusquedaParqueo =
+                  $any($event.target).value || '';
+                filtrarParqueos()
+              ">
+            </ion-searchbar>
+
+            <ion-button
+              fill="clear"
+              class="refresh-button"
+              (click)="cargarParqueos()">
+
+              <ion-icon
+                name="refresh-outline"
+                slot="icon-only">
+              </ion-icon>
+
+            </ion-button>
+
+          </div>
+
+        </div>
+
+        <!-- CARGANDO -->
+        <div
+          class="loading-state"
+          *ngIf="cargandoParqueos">
+
+          <ion-spinner name="crescent"></ion-spinner>
+
+          <p>
+            Cargando parqueos...
+          </p>
+
+        </div>
+
+        <!-- VACÍO -->
+        <div
+          class="empty-state"
+          *ngIf="
+            !cargandoParqueos &&
+            parqueosFiltrados.length === 0
+          ">
+
+          <ion-icon name="business-outline"></ion-icon>
+
+          <h3>
+            No se encontraron parqueos
+          </h3>
+
+          <p>
+            Registre un parqueo nuevo o cambie
+            el criterio de búsqueda.
+          </p>
+
+        </div>
+
+        <!-- TARJETAS -->
+        <div
+          class="parking-list"
+          *ngIf="
+            !cargandoParqueos &&
+            parqueosFiltrados.length > 0
+          ">
+
+          <article
+            class="parking-card"
+            *ngFor="
+              let parqueo of parqueosFiltrados
+            "
+            [class.parking-selected]="
+              parqueoSeleccionado?.parqueoId ===
+              parqueo.parqueoId
+            "
+            [class.parking-inactive]="
+              !parqueo.activo
+            ">
+
+            <div
+              class="parking-main"
+              (click)="seleccionarParqueo(parqueo)">
+
+              <div class="parking-card-header">
+
+                <div class="parking-icon">
+                  <ion-icon
+                    name="business-outline">
+                  </ion-icon>
+                </div>
+
+                <div class="parking-title">
+
+                  <h3>
+                    {{ parqueo.nombreParqueo }}
+                  </h3>
+
+                  <p>
+                    {{ parqueo.direccion }}
+                  </p>
+
+                </div>
+
+                <ion-badge
+                  [class.active-badge]="
+                    parqueo.activo
+                  "
+                  [class.inactive-badge]="
+                    !parqueo.activo
+                  ">
+
+                  {{
+                    parqueo.activo
+                      ? 'Activo'
+                      : 'Inactivo'
+                  }}
+
+                </ion-badge>
+
+              </div>
+
+              <div class="parking-information">
+
+                <div>
+                  <span>Capacidad</span>
+
+                  <strong>
+                    {{ parqueo.capacidadTotal }}
+                  </strong>
+                </div>
+
+                <div>
+                  <span>Teléfono</span>
+
+                  <strong>
+                    {{
+                      parqueo.telefono ||
+                      'No registrado'
+                    }}
+                  </strong>
+                </div>
+
+              </div>
+
+              <div class="select-message">
+
+                <ion-icon
+                  name="location-outline">
+                </ion-icon>
+
+                <span>
+                  {{
+                    parqueoSeleccionado?.parqueoId ===
+                    parqueo.parqueoId
+                      ? 'Parqueo seleccionado'
+                      : 'Ver espacios'
+                  }}
+                </span>
+
+              </div>
+
+            </div>
+
+            <div class="parking-actions">
+
+              <ion-button
+                fill="outline"
+                class="edit-button"
+                (click)="editarParqueo(parqueo)">
+
+                <ion-icon
+                  name="create-outline"
+                  slot="start">
+                </ion-icon>
+
+                Editar
+
+              </ion-button>
+
+              <ion-button
+                fill="clear"
+                class="delete-button"
+                [disabled]="!parqueo.activo"
+                (click)="desactivarParqueo(parqueo)">
+
+                <ion-icon
+                  name="trash-outline"
+                  slot="start">
+                </ion-icon>
+
+                Desactivar
+
+              </ion-button>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </article>
+
+      <!-- PANEL DE ESPACIOS -->
+      <article class="main-panel spaces-panel">
+
+        <!-- SIN PARQUEO SELECCIONADO -->
+        <div
+          class="no-parking-selected"
+          *ngIf="!parqueoSeleccionado">
+
+          <ion-icon name="location-outline"></ion-icon>
+
+          <h2>
+            Seleccione un parqueo
+          </h2>
+
+          <p>
+            Presione una tarjeta de parqueo para
+            consultar y administrar sus espacios.
+          </p>
+
+        </div>
+
+        <ng-container *ngIf="parqueoSeleccionado">
+
+          <div class="spaces-heading">
+
+            <div>
+              <p class="panel-eyebrow lime-text">
+                ESPACIOS
+              </p>
+
+              <h2>
+                {{ parqueoSeleccionado.nombreParqueo }}
+              </h2>
+
+              <span>
+                Capacidad:
+                {{ parqueoSeleccionado.capacidadTotal }}
+              </span>
+            </div>
+
+            <ion-button
+              class="new-space-button"
+              [disabled]="!parqueoSeleccionado.activo"
+              (click)="abrirFormularioEspacioNuevo()">
+
+              <ion-icon
+                name="add-outline"
+                slot="start">
+              </ion-icon>
+
+              Nuevo espacio
+
+            </ion-button>
+
+          </div>
+
+          <!-- INDICADORES DE ESPACIOS -->
+          <div class="spaces-summary">
+
+            <article>
+
+              <span class="status-dot available"></span>
+
+              <div>
+                <small>Disponibles</small>
+
+                <strong>
+                  {{ espaciosDisponibles }}
+                </strong>
+              </div>
+
+            </article>
+
+            <article>
+
+              <span class="status-dot occupied"></span>
+
+              <div>
+                <small>Ocupados</small>
+
+                <strong>
+                  {{ espaciosOcupados }}
+                </strong>
+              </div>
+
+            </article>
+
+            <article>
+
+              <span class="status-dot total"></span>
+
+              <div>
+                <small>Registrados</small>
+
+                <strong>
+                  {{ espacios.length }}
+                </strong>
+              </div>
+
+            </article>
+
+          </div>
+
+          <!-- FORMULARIO ESPACIO -->
+          <section
+            class="space-form"
+            *ngIf="mostrarFormularioEspacio">
+
+            <div class="space-form-heading">
+
+              <div>
+                <p class="panel-eyebrow lime-text">
+                  {{
+                    modoEdicionEspacio
+                      ? 'MODIFICACIÓN'
+                      : 'NUEVO ESPACIO'
+                  }}
+                </p>
+
+                <h3>
+                  {{
+                    modoEdicionEspacio
+                      ? 'Editar espacio'
+                      : 'Registrar espacio'
+                  }}
+                </h3>
+              </div>
+
+              <ion-button
+                fill="clear"
+                class="close-button"
+                (click)="cancelarFormularioEspacio()">
+
+                <ion-icon
+                  name="close-circle-outline"
+                  slot="icon-only">
+                </ion-icon>
+
+              </ion-button>
+
+            </div>
+
+            <form
+              [formGroup]="formularioEspacio"
+              (ngSubmit)="guardarEspacio()">
+
+              <div class="space-form-grid">
+
+                <div class="form-field">
+
+                  <label>
+                    Número de espacio *
+                  </label>
+
+                  <ion-item
+                    lines="none"
+                    [class.invalid-field]="
+                      campoEspacioInvalido(
+                        'numeroEspacio'
+                      )
+                    ">
+
+                    <ion-icon
+                      name="location-outline"
+                      slot="start">
+                    </ion-icon>
+
+                    <ion-input
+                      formControlName="numeroEspacio"
+                      maxlength="20"
+                      placeholder="A-01">
+                    </ion-input>
+
+                  </ion-item>
+
+                  <small
+                    class="validation-message"
+                    *ngIf="
+                      campoEspacioInvalido(
+                        'numeroEspacio'
+                      )
+                    ">
+
+                    El número del espacio es obligatorio.
+
+                  </small>
+
+                </div>
+
+                <div class="form-field status-field">
+
+                  <label>
+                    Disponibilidad
+                  </label>
+
+                  <ion-item lines="none">
+
+                    <ion-label>
+                      {{
+                        formularioEspacio
+                          .get('disponible')
+                          ?.value
+                          ? 'Disponible'
+                          : 'Ocupado'
+                      }}
+                    </ion-label>
+
+                    <ion-toggle
+                      formControlName="disponible">
+                    </ion-toggle>
+
+                  </ion-item>
+
+                </div>
+
+                <div
+                  class="form-field status-field"
+                  *ngIf="modoEdicionEspacio">
+
+                  <label>
+                    Estado
+                  </label>
+
+                  <ion-item lines="none">
+
+                    <ion-label>
+                      {{
+                        formularioEspacio
+                          .get('activo')
+                          ?.value
+                          ? 'Espacio activo'
+                          : 'Espacio inactivo'
+                      }}
+                    </ion-label>
+
+                    <ion-toggle
+                      formControlName="activo">
+                    </ion-toggle>
+
+                  </ion-item>
+
+                </div>
+
+              </div>
+
+              <div class="form-actions">
+
+                <ion-button
+                  type="button"
+                  fill="outline"
+                  class="cancel-button"
+                  [disabled]="guardandoEspacio"
+                  (click)="cancelarFormularioEspacio()">
+
+                  Cancelar
+
+                </ion-button>
+
+                <ion-button
+                  type="submit"
+                  class="save-space-button"
+                  [disabled]="guardandoEspacio">
+
+                  <ion-spinner
+                    *ngIf="guardandoEspacio"
+                    name="crescent">
+                  </ion-spinner>
+
+                  <ion-icon
+                    *ngIf="!guardandoEspacio"
+                    name="save-outline"
+                    slot="start">
+                  </ion-icon>
+
+                  <span *ngIf="!guardandoEspacio">
+                    {{
+                      modoEdicionEspacio
+                        ? 'Guardar cambios'
+                        : 'Registrar espacio'
+                    }}
+                  </span>
+
+                </ion-button>
+
+              </div>
+
+            </form>
+
+          </section>
+
+          <!-- BUSCADOR ESPACIOS -->
+          <div class="spaces-toolbar">
+
+            <div>
+              <h3>
+                Espacios registrados
+              </h3>
+
+              <span>
+                {{ espaciosFiltrados.length }}
+                resultado(s)
+              </span>
+            </div>
+
+            <div class="toolbar-actions">
+
+              <ion-searchbar
+                placeholder="Buscar espacio"
+                debounce="250"
+                [value]="textoBusquedaEspacio"
+                (ionInput)="
+                  textoBusquedaEspacio =
+                    $any($event.target).value || '';
+                  filtrarEspacios()
+                ">
+              </ion-searchbar>
+
+              <ion-button
+                fill="clear"
+                class="refresh-button"
+                (click)="
+                  cargarEspacios(
+                    parqueoSeleccionado.parqueoId
+                  )
+                ">
+
+                <ion-icon
+                  name="refresh-outline"
+                  slot="icon-only">
+                </ion-icon>
+
+              </ion-button>
+
+            </div>
+
+          </div>
+
+          <!-- CARGANDO ESPACIOS -->
+          <div
+            class="loading-state"
+            *ngIf="cargandoEspacios">
+
+            <ion-spinner name="crescent"></ion-spinner>
+
+            <p>
+              Cargando espacios...
+            </p>
+
+          </div>
+
+          <!-- SIN ESPACIOS -->
+          <div
+            class="empty-state compact-empty"
+            *ngIf="
+              !cargandoEspacios &&
+              espaciosFiltrados.length === 0
+            ">
+
+            <ion-icon name="location-outline"></ion-icon>
+
+            <h3>
+              No hay espacios registrados
+            </h3>
+
+            <p>
+              Registre el primer espacio para
+              este parqueo.
+            </p>
+
+          </div>
+
+          <!-- CUADRÍCULA ESPACIOS -->
+          <div
+            class="spaces-grid"
+            *ngIf="
+              !cargandoEspacios &&
+              espaciosFiltrados.length > 0
+            ">
+
+            <article
+              class="space-card"
+              *ngFor="
+                let espacio of espaciosFiltrados
+              "
+              [class.space-available]="
+                espacio.disponible &&
+                espacio.activo
+              "
+              [class.space-occupied]="
+                !espacio.disponible &&
+                espacio.activo
+              "
+              [class.space-inactive]="
+                !espacio.activo
+              ">
+
+              <div class="space-card-top">
+
+                <div class="space-number">
+                  {{ espacio.numeroEspacio }}
+                </div>
+
+                <ion-badge
+                  [class.available-badge]="
+                    espacio.disponible &&
+                    espacio.activo
+                  "
+                  [class.occupied-badge]="
+                    !espacio.disponible &&
+                    espacio.activo
+                  "
+                  [class.inactive-badge]="
+                    !espacio.activo
+                  ">
+
+                  {{
+                    !espacio.activo
+                      ? 'Inactivo'
+                      : espacio.disponible
+                        ? 'Disponible'
+                        : 'Ocupado'
+                  }}
+
+                </ion-badge>
+
+              </div>
+
+              <div class="space-visual">
+
+                <ion-icon
+                  name="location-outline">
+                </ion-icon>
+
+              </div>
+
+              <div class="space-actions">
+
+                <ion-button
+                  fill="clear"
+                  class="space-edit-button"
+                  (click)="editarEspacio(espacio)">
+
+                  <ion-icon
+                    name="create-outline"
+                    slot="icon-only">
+                  </ion-icon>
+
+                </ion-button>
+
+                <ion-button
+                  fill="clear"
+                  class="space-delete-button"
+                  [disabled]="!espacio.activo"
+                  (click)="desactivarEspacio(espacio)">
+
+                  <ion-icon
+                    name="trash-outline"
+                    slot="icon-only">
+                  </ion-icon>
+
+                </ion-button>
+
+              </div>
+
+            </article>
+
+          </div>
+
+        </ng-container>
+
+      </article>
+
+    </section>
+
+  </main>
+
+</ion-content>

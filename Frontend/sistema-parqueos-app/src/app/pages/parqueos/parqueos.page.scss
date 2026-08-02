@@ -1,0 +1,823 @@
+:host {
+  --background-main: #101516;
+  --background-panel: #1c2325;
+  --background-panel-light: #252d2f;
+  --background-panel-dark: #161d1f;
+  --border-color: #384345;
+
+  --accent-lime: #8bd51f;
+  --accent-green: #607d34;
+  --accent-turquoise: #11d8c4;
+  --accent-cyan: #21b9e8;
+  --accent-yellow: #f0b51b;
+  --accent-purple: #a66cf4;
+  --accent-pink: #f43768;
+
+  --text-main: #f4f7f3;
+  --text-muted: #9ca7a4;
+}
+
+ion-content {
+  --background: var(--background-main);
+}
+
+.parqueos-page {
+  width: min(1550px, 100%);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+/* ENCABEZADO */
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 24px;
+
+  .eyebrow {
+    margin: 0 0 7px;
+    color: var(--accent-cyan);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.17em;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: clamp(1.9rem, 4vw, 2.7rem);
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+  }
+}
+
+.new-parking-button,
+.save-parking-button {
+  --background:
+    linear-gradient(
+      135deg,
+      var(--accent-cyan),
+      #14779b
+    );
+
+  --background-hover: #21b9e8;
+  --color: #ffffff;
+  --border-radius: 12px;
+
+  min-height: 46px;
+  font-weight: 750;
+}
+
+.new-space-button,
+.save-space-button {
+  --background:
+    linear-gradient(
+      135deg,
+      var(--accent-lime),
+      #477c14
+    );
+
+  --background-hover: var(--accent-lime);
+  --color: #ffffff;
+  --border-radius: 12px;
+
+  min-height: 43px;
+  font-weight: 750;
+}
+
+/* TARJETAS RESUMEN */
+
+.summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 19px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--background-panel);
+
+  span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+
+  strong {
+    color: var(--text-main);
+    font-size: 1.6rem;
+  }
+}
+
+.summary-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  color: #ffffff;
+
+  ion-icon {
+    font-size: 27px;
+  }
+}
+
+.parking-icon {
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-cyan),
+      #126a8a
+    );
+}
+
+.active-icon {
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-turquoise),
+      #087c70
+    );
+}
+
+.capacity-icon {
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-purple),
+      #6132a0
+    );
+}
+
+/* PANELES */
+
+.form-panel,
+.main-panel {
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background: var(--background-panel);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.22);
+}
+
+.form-panel {
+  padding: 24px;
+}
+
+.parking-form-panel {
+  margin-bottom: 24px;
+}
+
+.panel-heading,
+.list-toolbar,
+.spaces-heading,
+.spaces-toolbar,
+.space-form-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
+  h2,
+  h3 {
+    margin: 0;
+    color: var(--text-main);
+  }
+
+  span {
+    display: block;
+    margin-top: 5px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+}
+
+.panel-eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent-cyan);
+  font-size: 0.69rem;
+  font-weight: 850;
+  letter-spacing: 0.15em;
+}
+
+.cyan-text {
+  color: var(--accent-cyan);
+}
+
+.lime-text {
+  color: var(--accent-lime);
+}
+
+.close-button {
+  --color: var(--text-muted);
+}
+
+/* FORMULARIOS */
+
+.form-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.form-field {
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #dfe1dc;
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+
+  ion-item {
+    --background: var(--background-panel-light);
+    --color: var(--text-main);
+    --placeholder-color: #858b83;
+    --padding-start: 14px;
+    --inner-padding-end: 12px;
+
+    min-height: 55px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+
+    ion-icon {
+      color: var(--accent-cyan);
+    }
+
+    &:focus-within {
+      border-color: var(--accent-cyan);
+      box-shadow:
+        0 0 0 3px rgba(33, 185, 232, 0.11);
+    }
+  }
+}
+
+.form-field-wide {
+  grid-column: span 2;
+}
+
+.status-field ion-toggle {
+  --track-background-checked: var(--accent-lime);
+  --handle-background-checked: #ffffff;
+}
+
+.invalid-field {
+  border-color: var(--accent-pink) !important;
+}
+
+.validation-message {
+  display: block;
+  margin: 6px 0 0 4px;
+  color: var(--accent-pink);
+  font-size: 0.73rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cancel-button {
+  --border-color: var(--border-color);
+  --color: var(--text-muted);
+  --border-radius: 12px;
+}
+
+/* DISTRIBUCIÓN PRINCIPAL */
+
+.management-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(360px, 0.9fr)
+    minmax(500px, 1.45fr);
+  gap: 20px;
+}
+
+.main-panel {
+  min-width: 0;
+  padding: 22px;
+}
+
+.parking-list-panel,
+.spaces-panel {
+  min-height: 620px;
+}
+
+/* BUSCADORES */
+
+.toolbar-actions {
+  display: flex;
+  align-items: center;
+  width: min(420px, 100%);
+
+  ion-searchbar {
+    --background: var(--background-panel-light);
+    --color: var(--text-main);
+    --placeholder-color: #87918d;
+    --icon-color: var(--accent-cyan);
+    --clear-button-color: var(--text-muted);
+    --border-radius: 12px;
+
+    flex: 1;
+    padding: 0;
+  }
+}
+
+.refresh-button {
+  --color: var(--accent-cyan);
+}
+
+/* ESTADOS VACÍOS */
+
+.loading-state,
+.empty-state,
+.no-parking-selected {
+  display: grid;
+  place-items: center;
+  padding: 55px 20px;
+  color: var(--text-muted);
+  text-align: center;
+
+  ion-spinner {
+    color: var(--accent-cyan);
+  }
+
+  ion-icon {
+    color: var(--accent-cyan);
+    font-size: 55px;
+  }
+
+  h2,
+  h3 {
+    margin: 13px 0 6px;
+    color: var(--text-main);
+  }
+
+  p {
+    max-width: 390px;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.no-parking-selected {
+  min-height: 520px;
+
+  ion-icon {
+    color: var(--accent-lime);
+    font-size: 70px;
+  }
+}
+
+.compact-empty {
+  padding: 35px 15px;
+
+  ion-icon {
+    font-size: 44px;
+  }
+}
+
+/* TARJETAS PARQUEO */
+
+.parking-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.parking-card {
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--background-panel-light);
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-cyan);
+  }
+}
+
+.parking-selected {
+  border-color: var(--accent-lime);
+  box-shadow:
+    0 0 0 2px rgba(139, 213, 31, 0.1);
+
+  .select-message {
+    color: var(--accent-lime);
+  }
+}
+
+.parking-inactive {
+  opacity: 0.66;
+}
+
+.parking-main {
+  padding: 18px;
+  cursor: pointer;
+}
+
+.parking-card-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.parking-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 49px;
+  height: 49px;
+  border-radius: 14px;
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-cyan),
+      #116c8c
+    );
+
+  ion-icon {
+    font-size: 26px;
+  }
+}
+
+.parking-title {
+  min-width: 0;
+  flex: 1;
+
+  h3 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 1rem;
+  }
+
+  p {
+    overflow: hidden;
+    margin: 5px 0 0;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+ion-badge {
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 0.63rem;
+}
+
+.active-badge {
+  color: #b9ffef;
+  background: rgba(17, 216, 196, 0.15);
+}
+
+.inactive-badge {
+  color: #ffc4d2;
+  background: rgba(244, 55, 104, 0.15);
+}
+
+.parking-information {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin-top: 15px;
+
+  div {
+    padding: 10px;
+    border-radius: 10px;
+    background: var(--background-panel-dark);
+  }
+
+  span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+  }
+
+  strong {
+    color: var(--text-main);
+    font-size: 0.78rem;
+  }
+}
+
+.select-message {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 13px;
+  color: var(--accent-cyan);
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  ion-icon {
+    font-size: 16px;
+  }
+}
+
+.parking-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 11px 16px;
+  border-top: 1px solid var(--border-color);
+  background: rgba(16, 21, 22, 0.42);
+}
+
+.edit-button {
+  --border-color: var(--accent-cyan);
+  --color: var(--accent-cyan);
+  --border-radius: 10px;
+}
+
+.delete-button {
+  --color: var(--accent-pink);
+}
+
+/* ESPACIOS */
+
+.spaces-heading {
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.spaces-summary {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 17px 0;
+
+  article {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px;
+    border-radius: 11px;
+    background: var(--background-panel-light);
+  }
+
+  small {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+  }
+
+  strong {
+    display: block;
+    color: var(--text-main);
+    font-size: 1.05rem;
+  }
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-dot.available {
+  background: var(--accent-turquoise);
+  box-shadow:
+    0 0 10px rgba(17, 216, 196, 0.5);
+}
+
+.status-dot.occupied {
+  background: var(--accent-yellow);
+  box-shadow:
+    0 0 10px rgba(240, 181, 27, 0.5);
+}
+
+.status-dot.total {
+  background: var(--accent-purple);
+  box-shadow:
+    0 0 10px rgba(166, 108, 244, 0.5);
+}
+
+.space-form {
+  margin-bottom: 18px;
+  padding: 18px;
+  border: 1px solid rgba(139, 213, 31, 0.26);
+  border-radius: 14px;
+  background: rgba(139, 213, 31, 0.04);
+}
+
+.space-form-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 15px;
+  margin-top: 18px;
+
+  .form-field ion-item ion-icon {
+    color: var(--accent-lime);
+  }
+
+  .form-field ion-item:focus-within {
+    border-color: var(--accent-lime);
+    box-shadow:
+      0 0 0 3px rgba(139, 213, 31, 0.1);
+  }
+}
+
+.spaces-toolbar {
+  margin: 18px 0 15px;
+}
+
+/* CUADRÍCULA ESPACIOS */
+
+.spaces-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fill, minmax(145px, 1fr));
+  gap: 12px;
+}
+
+.space-card {
+  position: relative;
+  min-height: 155px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  background: var(--background-panel-light);
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+}
+
+.space-available {
+  border-bottom: 3px solid var(--accent-turquoise);
+
+  .space-visual {
+    color: var(--accent-turquoise);
+    background: rgba(17, 216, 196, 0.11);
+  }
+}
+
+.space-occupied {
+  border-bottom: 3px solid var(--accent-yellow);
+
+  .space-visual {
+    color: var(--accent-yellow);
+    background: rgba(240, 181, 27, 0.11);
+  }
+}
+
+.space-inactive {
+  opacity: 0.57;
+  border-bottom: 3px solid var(--accent-pink);
+
+  .space-visual {
+    color: var(--accent-pink);
+    background: rgba(244, 55, 104, 0.09);
+  }
+}
+
+.space-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 7px;
+}
+
+.space-number {
+  color: var(--text-main);
+  font-size: 1rem;
+  font-weight: 850;
+}
+
+.available-badge {
+  color: #b9ffef;
+  background: rgba(17, 216, 196, 0.15);
+}
+
+.occupied-badge {
+  color: #ffe0a0;
+  background: rgba(240, 181, 27, 0.15);
+}
+
+.space-visual {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin: 17px auto 12px;
+  border-radius: 14px;
+
+  ion-icon {
+    font-size: 27px;
+  }
+}
+
+.space-actions {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.space-edit-button {
+  --color: var(--accent-cyan);
+}
+
+.space-delete-button {
+  --color: var(--accent-pink);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1200px) {
+  .management-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .parking-list-panel,
+  .spaces-panel {
+    min-height: auto;
+  }
+}
+
+@media (max-width: 780px) {
+  .parqueos-page {
+    padding: 19px;
+  }
+
+  .page-heading,
+  .list-toolbar,
+  .spaces-toolbar,
+  .spaces-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .new-parking-button,
+  .new-space-button,
+  .toolbar-actions {
+    width: 100%;
+  }
+
+  .summary-grid,
+  .form-grid,
+  .space-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-field-wide {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .form-panel,
+  .main-panel {
+    padding: 17px;
+  }
+
+  .spaces-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .parking-information {
+    grid-template-columns: 1fr;
+  }
+
+  .parking-actions,
+  .form-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .spaces-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}

@@ -1,0 +1,578 @@
+<ion-content [fullscreen]="true">
+
+  <main class="vehiculos-page">
+
+    <section class="page-heading">
+
+      <div>
+        <p class="eyebrow">ADMINISTRACIÓN</p>
+
+        <h1>Gestión de vehículos</h1>
+
+        <p>
+          Registre y administre los vehículos
+          asociados a los clientes.
+        </p>
+      </div>
+
+      <div class="heading-actions">
+
+        <ion-button
+          fill="outline"
+          class="back-button"
+          (click)="regresar()">
+
+          <ion-icon
+            name="arrow-back-outline"
+            slot="start">
+          </ion-icon>
+
+          Dashboard
+        </ion-button>
+
+        <ion-button
+          class="new-button"
+          (click)="abrirFormularioNuevo()">
+
+          <ion-icon
+            name="add-outline"
+            slot="start">
+          </ion-icon>
+
+          Nuevo vehículo
+        </ion-button>
+
+      </div>
+
+    </section>
+
+    <section class="summary-grid">
+
+      <article class="summary-card">
+        <div class="summary-icon total">
+          <ion-icon
+            name="car-sport-outline">
+          </ion-icon>
+        </div>
+
+        <div>
+          <span>Total vehículos</span>
+          <strong>{{ vehiculos.length }}</strong>
+        </div>
+      </article>
+
+      <article class="summary-card">
+        <div class="summary-icon active">
+          <ion-icon
+            name="checkmark-circle-outline">
+          </ion-icon>
+        </div>
+
+        <div>
+          <span>Activos</span>
+          <strong>{{ totalActivos }}</strong>
+        </div>
+      </article>
+
+      <article class="summary-card">
+        <div class="summary-icon inactive">
+          <ion-icon
+            name="close-circle-outline">
+          </ion-icon>
+        </div>
+
+        <div>
+          <span>Inactivos</span>
+          <strong>{{ totalInactivos }}</strong>
+        </div>
+      </article>
+
+    </section>
+
+    <section
+      class="form-panel"
+      *ngIf="mostrarFormulario">
+
+      <div class="panel-heading">
+
+        <div>
+          <p class="eyebrow">
+            {{
+              modoEdicion
+                ? 'MODIFICACIÓN'
+                : 'NUEVO REGISTRO'
+            }}
+          </p>
+
+          <h2>
+            {{
+              modoEdicion
+                ? 'Editar vehículo'
+                : 'Registrar vehículo'
+            }}
+          </h2>
+        </div>
+
+        <ion-button
+          fill="clear"
+          class="close-button"
+          (click)="cancelarFormulario()">
+
+          <ion-icon
+            name="close-circle-outline"
+            slot="icon-only">
+          </ion-icon>
+
+        </ion-button>
+
+      </div>
+
+      <form
+        [formGroup]="formulario"
+        (ngSubmit)="guardarVehiculo()">
+
+        <div class="form-grid">
+
+          <div class="form-field">
+            <label>Cliente *</label>
+
+            <ion-item
+              lines="none"
+              [class.invalid-field]="
+                campoInvalido('clienteId')
+              ">
+
+              <ion-icon
+                name="people-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-select
+                formControlName="clienteId"
+                interface="popover"
+                placeholder="Seleccione un cliente">
+
+                <ion-select-option
+                  *ngFor="let cliente of clientes"
+                  [value]="cliente.clienteId">
+
+                  {{ cliente.nombre }}
+                  {{ cliente.apellidos }}
+
+                </ion-select-option>
+
+              </ion-select>
+
+            </ion-item>
+
+            <small
+              class="validation-message"
+              *ngIf="campoInvalido('clienteId')">
+
+              Debe seleccionar un cliente.
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label>Tipo de vehículo *</label>
+
+            <ion-item
+              lines="none"
+              [class.invalid-field]="
+                campoInvalido(
+                  'tipoVehiculoId'
+                )
+              ">
+
+              <ion-icon
+                name="pricetag-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-select
+                formControlName="tipoVehiculoId"
+                interface="popover"
+                placeholder="Seleccione un tipo">
+
+                <ion-select-option
+                  *ngFor="
+                    let tipo of tiposVehiculo
+                  "
+                  [value]="tipo.tipoVehiculoId">
+
+                  {{ tipo.descripcion }}
+
+                </ion-select-option>
+
+              </ion-select>
+
+            </ion-item>
+
+            <small
+              class="validation-message"
+              *ngIf="
+                campoInvalido(
+                  'tipoVehiculoId'
+                )
+              ">
+
+              Debe seleccionar un tipo.
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label>Placa *</label>
+
+            <ion-item
+              lines="none"
+              [class.invalid-field]="
+                campoInvalido('placa')
+              ">
+
+              <ion-icon
+                name="car-sport-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-input
+                formControlName="placa"
+                maxlength="20"
+                placeholder="ABC-123">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              class="validation-message"
+              *ngIf="campoInvalido('placa')">
+
+              La placa es obligatoria.
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label>Marca *</label>
+
+            <ion-item
+              lines="none"
+              [class.invalid-field]="
+                campoInvalido('marca')
+              ">
+
+              <ion-icon
+                name="car-sport-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-input
+                formControlName="marca"
+                maxlength="100"
+                placeholder="Toyota">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              class="validation-message"
+              *ngIf="campoInvalido('marca')">
+
+              La marca es obligatoria.
+            </small>
+          </div>
+
+          <div class="form-field">
+            <label>Modelo</label>
+
+            <ion-item lines="none">
+
+              <ion-icon
+                name="car-sport-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-input
+                formControlName="modelo"
+                maxlength="100"
+                placeholder="Corolla">
+              </ion-input>
+
+            </ion-item>
+          </div>
+
+          <div class="form-field">
+            <label>Color</label>
+
+            <ion-item lines="none">
+
+              <ion-icon
+                name="color-palette-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-input
+                formControlName="color"
+                maxlength="50"
+                placeholder="Gris">
+              </ion-input>
+
+            </ion-item>
+          </div>
+
+          <div
+            class="form-field status-field"
+            *ngIf="modoEdicion">
+
+            <label>Estado</label>
+
+            <ion-item lines="none">
+
+              <ion-label>
+                {{
+                  formulario.get('activo')?.value
+                    ? 'Vehículo activo'
+                    : 'Vehículo inactivo'
+                }}
+              </ion-label>
+
+              <ion-toggle
+                formControlName="activo">
+              </ion-toggle>
+
+            </ion-item>
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+
+          <ion-button
+            type="button"
+            fill="outline"
+            class="cancel-button"
+            [disabled]="guardando"
+            (click)="cancelarFormulario()">
+
+            Cancelar
+          </ion-button>
+
+          <ion-button
+            type="submit"
+            class="save-button"
+            [disabled]="guardando">
+
+            <ion-spinner
+              *ngIf="guardando"
+              name="crescent">
+            </ion-spinner>
+
+            <ion-icon
+              *ngIf="!guardando"
+              name="save-outline"
+              slot="start">
+            </ion-icon>
+
+            <span *ngIf="!guardando">
+              {{
+                modoEdicion
+                  ? 'Guardar cambios'
+                  : 'Registrar vehículo'
+              }}
+            </span>
+
+          </ion-button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+    <section class="list-panel">
+
+      <div class="list-toolbar">
+
+        <div>
+          <h2>Vehículos registrados</h2>
+
+          <p>
+            {{ vehiculosFiltrados.length }}
+            resultado(s)
+          </p>
+        </div>
+
+        <div class="search-actions">
+
+          <ion-searchbar
+            placeholder="Buscar placa, cliente o marca"
+            debounce="250"
+            [value]="textoBusqueda"
+            (ionInput)="
+              textoBusqueda =
+                $any($event.target).value || '';
+              filtrarVehiculos()
+            ">
+          </ion-searchbar>
+
+          <ion-button
+            fill="clear"
+            class="refresh-button"
+            (click)="cargarVehiculos()">
+
+            <ion-icon
+              name="refresh-outline"
+              slot="icon-only">
+            </ion-icon>
+
+          </ion-button>
+
+        </div>
+
+      </div>
+
+      <div
+        class="loading-state"
+        *ngIf="cargando">
+
+        <ion-spinner name="crescent"></ion-spinner>
+        <p>Cargando vehículos...</p>
+      </div>
+
+      <div
+        class="empty-state"
+        *ngIf="
+          !cargando &&
+          vehiculosFiltrados.length === 0
+        ">
+
+        <ion-icon
+          name="car-sport-outline">
+        </ion-icon>
+
+        <h3>No se encontraron vehículos</h3>
+
+        <p>
+          Registre un vehículo nuevo o cambie
+          el criterio de búsqueda.
+        </p>
+      </div>
+
+      <div
+        class="vehicles-grid"
+        *ngIf="
+          !cargando &&
+          vehiculosFiltrados.length > 0
+        ">
+
+        <article
+          class="vehicle-card"
+          *ngFor="
+            let vehiculo of vehiculosFiltrados
+          "
+          [class.vehicle-inactive]="
+            !vehiculo.activo
+          ">
+
+          <div class="vehicle-card-header">
+
+            <div class="vehicle-icon">
+              <ion-icon
+                name="car-sport-outline">
+              </ion-icon>
+            </div>
+
+            <div class="vehicle-title">
+              <h3>{{ vehiculo.placa }}</h3>
+
+              <p>
+                {{ vehiculo.marca }}
+                {{ vehiculo.modelo || '' }}
+              </p>
+            </div>
+
+            <ion-badge
+              [class.active-badge]="
+                vehiculo.activo
+              "
+              [class.inactive-badge]="
+                !vehiculo.activo
+              ">
+
+              {{
+                vehiculo.activo
+                  ? 'Activo'
+                  : 'Inactivo'
+              }}
+            </ion-badge>
+
+          </div>
+
+          <div class="vehicle-information">
+
+            <div>
+              <span>Cliente</span>
+              <strong>
+                {{ vehiculo.nombreCliente }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Tipo</span>
+              <strong>
+                {{ vehiculo.tipoVehiculo }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Color</span>
+              <strong>
+                {{
+                  vehiculo.color ||
+                  'No registrado'
+                }}
+              </strong>
+            </div>
+
+          </div>
+
+          <div class="vehicle-actions">
+
+            <ion-button
+              fill="outline"
+              class="edit-button"
+              (click)="editarVehiculo(vehiculo)">
+
+              <ion-icon
+                name="create-outline"
+                slot="start">
+              </ion-icon>
+
+              Editar
+            </ion-button>
+
+            <ion-button
+              fill="clear"
+              class="delete-button"
+              [disabled]="!vehiculo.activo"
+              (click)="
+                desactivarVehiculo(vehiculo)
+              ">
+
+              <ion-icon
+                name="trash-outline"
+                slot="start">
+              </ion-icon>
+
+              Desactivar
+            </ion-button>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</ion-content>

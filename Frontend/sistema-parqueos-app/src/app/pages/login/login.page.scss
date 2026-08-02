@@ -1,0 +1,199 @@
+:host {
+  --color-background: #171919;
+  --color-panel: #242727;
+  --color-panel-light: #2d3030;
+  --color-moss: #667744;
+  --color-moss-light: #7f9158;
+  --color-text: #f4f4f1;
+  --color-muted: #aeb2aa;
+  --color-border: #414640;
+}
+
+ion-content {
+  --background: var(--color-background);
+}
+
+.login-page {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.login-card {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 440px);
+  padding: 38px;
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(45, 48, 48, 0.98),
+      rgba(31, 34, 34, 0.98)
+    );
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.42);
+}
+
+.brand-icon {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 22px;
+  border-radius: 22px;
+  color: var(--color-text);
+  background:
+    linear-gradient(
+      135deg,
+      var(--color-moss-light),
+      var(--color-moss)
+    );
+  box-shadow:
+    0 12px 30px rgba(102, 119, 68, 0.35);
+
+  ion-icon {
+    font-size: 36px;
+  }
+}
+
+.login-header {
+  margin-bottom: 30px;
+  text-align: center;
+
+  .eyebrow {
+    margin: 0 0 8px;
+    color: var(--color-moss-light);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--color-text);
+    font-size: clamp(1.8rem, 5vw, 2.35rem);
+    font-weight: 800;
+  }
+
+  .subtitle {
+    margin: 10px 0 0;
+    color: var(--color-muted);
+    line-height: 1.5;
+  }
+}
+
+.login-form {
+  display: grid;
+  gap: 12px;
+}
+
+.field-label {
+  margin-top: 4px;
+  color: #d9dcd5;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.login-field {
+  --background: var(--color-panel-light);
+  --color: var(--color-text);
+  --placeholder-color: #858b83;
+  --padding-start: 15px;
+  --inner-padding-end: 8px;
+
+  min-height: 58px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+
+  ion-icon {
+    color: var(--color-moss-light);
+    font-size: 20px;
+  }
+
+  &:focus-within {
+    border-color: var(--color-moss-light);
+    box-shadow:
+      0 0 0 3px rgba(127, 145, 88, 0.14);
+  }
+}
+
+.password-button {
+  --color: var(--color-muted);
+  margin: 0;
+}
+
+.login-button {
+  --background: var(--color-moss);
+  --background-hover: var(--color-moss-light);
+  --background-activated: #58673c;
+  --color: white;
+  --border-radius: 14px;
+
+  min-height: 54px;
+  margin-top: 18px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+
+  ion-spinner {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.login-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 26px;
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.security-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-moss-light);
+  box-shadow:
+    0 0 12px rgba(127, 145, 88, 0.8);
+}
+
+.login-decoration {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(4px);
+  opacity: 0.16;
+  background: var(--color-moss-light);
+}
+
+.decoration-one {
+  top: -150px;
+  right: -100px;
+  width: 420px;
+  height: 420px;
+}
+
+.decoration-two {
+  bottom: -190px;
+  left: -130px;
+  width: 480px;
+  height: 480px;
+}
+
+@media (max-width: 520px) {
+  .login-page {
+    padding: 16px;
+  }
+
+  .login-card {
+    padding: 28px 22px;
+    border-radius: 20px;
+  }
+}

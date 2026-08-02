@@ -1,0 +1,167 @@
+<ion-content [fullscreen]="true">
+  <main class="ingresos-page">
+    <section class="page-heading">
+      <div>
+        <p class="eyebrow">CONTROL OPERATIVO</p>
+        <h1>Ingresos y salidas</h1>
+        <p>Registre la entrada y salida de vehículos del sistema de parqueos.</p>
+      </div>
+      <ion-button class="new-button" (click)="abrirFormulario()">
+        <ion-icon name="enter-outline" slot="start"></ion-icon>
+        Registrar ingreso
+      </ion-button>
+    </section>
+
+    <section class="summary-grid">
+      <article class="summary-card">
+        <div class="summary-icon inside-icon"><ion-icon name="car-sport-outline"></ion-icon></div>
+        <div><span>Vehículos dentro</span><strong>{{ ingresosActivos.length }}</strong></div>
+      </article>
+      <article class="summary-card">
+        <div class="summary-icon today-icon"><ion-icon name="arrow-down-circle-outline"></ion-icon></div>
+        <div><span>Ingresos de hoy</span><strong>{{ totalIngresosHoy }}</strong></div>
+      </article>
+      <article class="summary-card">
+        <div class="summary-icon finished-icon"><ion-icon name="checkmark-circle-outline"></ion-icon></div>
+        <div><span>Movimientos finalizados</span><strong>{{ totalFinalizados }}</strong></div>
+      </article>
+    </section>
+
+    <section class="form-panel" *ngIf="mostrarFormulario">
+      <div class="panel-heading">
+        <div><p class="panel-eyebrow">NUEVO MOVIMIENTO</p><h2>Registrar ingreso</h2></div>
+        <ion-button fill="clear" class="close-button" (click)="cancelarFormulario()">
+          <ion-icon name="close-circle-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+
+      <form [formGroup]="formularioIngreso" (ngSubmit)="registrarIngreso()">
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Vehículo *</label>
+            <ion-item lines="none" [class.invalid-field]="campoInvalido('vehiculoId')">
+              <ion-icon name="car-sport-outline" slot="start"></ion-icon>
+              <ion-select formControlName="vehiculoId" interface="popover" placeholder="Seleccione un vehículo">
+                <ion-select-option *ngFor="let vehiculo of vehiculos" [value]="vehiculo.vehiculoId">
+                  {{ vehiculo.placa }} · {{ vehiculo.nombreCliente }}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <small class="validation-message" *ngIf="campoInvalido('vehiculoId')">Debe seleccionar un vehículo.</small>
+          </div>
+
+          <div class="form-field">
+            <label>Parqueo *</label>
+            <ion-item lines="none" [class.invalid-field]="campoInvalido('parqueoId')">
+              <ion-icon name="location-outline" slot="start"></ion-icon>
+              <ion-select formControlName="parqueoId" interface="popover" placeholder="Seleccione un parqueo" (ionChange)="seleccionarParqueo()">
+                <ion-select-option *ngFor="let parqueo of parqueos" [value]="parqueo.parqueoId">
+                  {{ parqueo.nombreParqueo }}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <small class="validation-message" *ngIf="campoInvalido('parqueoId')">Debe seleccionar un parqueo.</small>
+          </div>
+
+          <div class="form-field form-field-wide">
+            <label>Espacio disponible *</label>
+            <ion-item lines="none" [class.invalid-field]="campoInvalido('espacioId')">
+              <ion-icon name="location-outline" slot="start"></ion-icon>
+              <ion-select formControlName="espacioId" interface="popover" placeholder="Seleccione un espacio">
+                <ion-select-option *ngFor="let espacio of espaciosDisponibles" [value]="espacio.espacioId">
+                  {{ espacio.numeroEspacio }}
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+            <small class="validation-message" *ngIf="campoInvalido('espacioId')">Debe seleccionar un espacio disponible.</small>
+            <small class="availability-message" *ngIf="formularioIngreso.get('parqueoId')?.value && espaciosDisponibles.length === 0">
+              Este parqueo no tiene espacios disponibles.
+            </small>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <ion-button type="button" fill="outline" class="cancel-button" [disabled]="guardando" (click)="cancelarFormulario()">Cancelar</ion-button>
+          <ion-button type="submit" class="save-button" [disabled]="guardando">
+            <ion-spinner *ngIf="guardando" name="crescent"></ion-spinner>
+            <ion-icon *ngIf="!guardando" name="enter-outline" slot="start"></ion-icon>
+            <span *ngIf="!guardando">Registrar ingreso</span>
+          </ion-button>
+        </div>
+      </form>
+    </section>
+
+    <section class="active-panel">
+      <div class="panel-heading">
+        <div><p class="panel-eyebrow turquoise-text">OPERACIÓN ACTUAL</p><h2>Vehículos dentro</h2><span>{{ ingresosActivos.length }} vehículo(s)</span></div>
+        <ion-button fill="clear" class="refresh-button" (click)="cargarActivos()">
+          <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </div>
+
+      <div class="empty-state compact" *ngIf="ingresosActivos.length === 0">
+        <ion-icon name="car-sport-outline"></ion-icon>
+        <h3>No hay vehículos dentro</h3>
+        <p>Los vehículos con ingreso activo aparecerán aquí.</p>
+      </div>
+
+      <div class="active-grid" *ngIf="ingresosActivos.length > 0">
+        <article class="active-card" *ngFor="let ingreso of ingresosActivos">
+          <div class="active-header">
+            <div class="active-icon"><ion-icon name="car-sport-outline"></ion-icon></div>
+            <div><h3>{{ ingreso.placa }}</h3><p>{{ ingreso.nombreParqueo }} · Espacio {{ ingreso.numeroEspacio }}</p></div>
+            <ion-badge class="active-badge">Dentro</ion-badge>
+          </div>
+          <div class="active-information">
+            <div><span>Fecha de ingreso</span><strong>{{ formatearFecha(ingreso.fechaIngreso) }}</strong></div>
+            <div><span>Estado</span><strong>{{ ingreso.estado }}</strong></div>
+          </div>
+          <ion-button expand="block" class="exit-button" [disabled]="registrandoSalidaId === ingreso.ingresoId" (click)="registrarSalida(ingreso)">
+            <ion-spinner *ngIf="registrandoSalidaId === ingreso.ingresoId" name="crescent"></ion-spinner>
+            <ion-icon *ngIf="registrandoSalidaId !== ingreso.ingresoId" name="exit-outline" slot="start"></ion-icon>
+            <span *ngIf="registrandoSalidaId !== ingreso.ingresoId">Registrar salida</span>
+          </ion-button>
+        </article>
+      </div>
+    </section>
+
+    <section class="history-panel">
+      <div class="history-toolbar">
+        <div><p class="panel-eyebrow purple-text">HISTORIAL</p><h2>Movimientos registrados</h2><span>{{ historialFiltrado.length }} resultado(s)</span></div>
+        <div class="search-actions">
+          <ion-searchbar placeholder="Buscar placa, parqueo o espacio" debounce="250" [value]="textoBusqueda"
+            (ionInput)="textoBusqueda = $any($event.target).value || ''; filtrarHistorial()"></ion-searchbar>
+          <ion-button fill="clear" class="refresh-button" (click)="cargarIngresos()">
+            <ion-icon name="refresh-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+
+      <div class="loading-state" *ngIf="cargando"><ion-spinner name="crescent"></ion-spinner><p>Cargando movimientos...</p></div>
+
+      <div class="empty-state" *ngIf="!cargando && historialFiltrado.length === 0">
+        <ion-icon name="document-text-outline"></ion-icon><h3>No se encontraron movimientos</h3><p>Registre un ingreso o cambie el criterio de búsqueda.</p>
+      </div>
+
+      <div class="history-list" *ngIf="!cargando && historialFiltrado.length > 0">
+        <article class="history-item" *ngFor="let ingreso of historialFiltrado">
+          <div class="movement-icon" [class.entry]="!ingreso.fechaSalida" [class.finished]="ingreso.fechaSalida">
+            <ion-icon [name]="ingreso.fechaSalida ? 'checkmark-circle-outline' : 'arrow-down-circle-outline'"></ion-icon>
+          </div>
+          <div class="movement-main">
+            <div class="movement-title">
+              <div><h3>{{ ingreso.placa }}</h3><p>{{ ingreso.nombreParqueo }} · Espacio {{ ingreso.numeroEspacio }}</p></div>
+              <ion-badge [class.inside-badge]="!ingreso.fechaSalida" [class.finished-badge]="ingreso.fechaSalida">
+                {{ ingreso.fechaSalida ? 'Finalizado' : 'Dentro' }}
+              </ion-badge>
+            </div>
+            <div class="movement-dates">
+              <div><span>Ingreso</span><strong>{{ formatearFecha(ingreso.fechaIngreso) }}</strong></div>
+              <div><span>Salida</span><strong>{{ formatearFecha(ingreso.fechaSalida) }}</strong></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+</ion-content>

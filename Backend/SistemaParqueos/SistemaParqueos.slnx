@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="SistemaParqueos.AccesoDatos/SistemaParqueos.AccesoDatos.csproj" />
+  <Project Path="SistemaParqueos.API/SistemaParqueos.API.csproj" />
+  <Project Path="SistemaParqueos.Dominio/SistemaParqueos.Dominio.csproj" />
+  <Project Path="SistemaParqueos.LogicaNegocio/SistemaParqueos.LogicaNegocio.csproj" />
+  <Project Path="SistemaParqueos.Utilitarios/SistemaParqueos.Utilitarios.csproj" />
+</Solution>

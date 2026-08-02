@@ -1,0 +1,7 @@
+{
+  "name": "sistema-parqueos-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

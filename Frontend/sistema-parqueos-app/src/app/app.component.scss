@@ -1,0 +1,255 @@
+:host {
+  --sidebar-background: #101617;
+  --sidebar-background-light: #182022;
+  --sidebar-border: #293436;
+
+  --accent-lime: #8bd51f;
+  --accent-turquoise: #11d8c4;
+  --accent-cyan: #21b9e8;
+  --accent-purple: #a66cf4;
+  --accent-yellow: #f0b51b;
+  --accent-pink: #f43768;
+
+  --text-main: #f4f7f3;
+  --text-muted: #9ca7a4;
+}
+
+ion-split-pane {
+  --side-width: 260px;
+  --side-max-width: 260px;
+  --border: 1px solid var(--sidebar-border);
+}
+
+.main-menu {
+  --width: 260px;
+  --min-width: 260px;
+  --max-width: 260px;
+  --background: var(--sidebar-background);
+
+  ion-content {
+    --background: var(--sidebar-background);
+  }
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 100%;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(139, 213, 31, 0.08),
+      transparent 34%
+    ),
+    var(--sidebar-background);
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 104px;
+  padding: 22px 24px;
+  border-bottom: 1px solid var(--sidebar-border);
+}
+
+.brand-logo {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border: 2px solid var(--accent-lime);
+  border-radius: 14px;
+  color: var(--accent-lime);
+  background: rgba(139, 213, 31, 0.08);
+  box-shadow:
+    0 0 20px rgba(139, 213, 31, 0.15);
+
+  ion-icon {
+    font-size: 31px;
+  }
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  color: var(--text-main);
+  font-size: 1.03rem;
+  line-height: 1.22;
+  letter-spacing: 0.03em;
+
+  strong {
+    font-weight: 850;
+  }
+
+  span {
+    font-weight: 700;
+  }
+}
+
+.sidebar-navigation {
+  flex: 1;
+  padding: 18px 0;
+  overflow-y: auto;
+
+  ion-list {
+    padding: 0;
+    background: transparent;
+  }
+}
+
+.menu-item {
+  --background: transparent;
+  --background-hover:
+    rgba(139, 213, 31, 0.08);
+  --color: #e6ebe8;
+  --padding-start: 25px;
+  --inner-padding-end: 20px;
+  --min-height: 54px;
+
+  position: relative;
+  margin: 2px 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  ion-icon {
+    margin-right: 17px;
+    font-size: 21px;
+  }
+}
+
+.menu-item-active {
+  --background:
+    linear-gradient(
+      90deg,
+      rgba(139, 213, 31, 0.28),
+      rgba(41, 86, 25, 0.4)
+    );
+
+  --color: #ffffff;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    background: var(--accent-lime);
+    content: '';
+  }
+}
+
+.color-lima {
+  color: var(--accent-lime);
+}
+
+.color-turquesa {
+  color: var(--accent-turquoise);
+}
+
+.color-celeste {
+  color: var(--accent-cyan);
+}
+
+.color-morado {
+  color: var(--accent-purple);
+}
+
+.color-amarillo {
+  color: var(--accent-yellow);
+}
+
+.sidebar-footer {
+  flex: 0 0 auto;
+  border-top: 1px solid var(--sidebar-border);
+}
+
+.logout-menu-button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 63px;
+  padding: 0 25px;
+  border: 0;
+  color: #e5e8e6;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  transition: background 160ms ease;
+
+  ion-icon {
+    color: var(--accent-pink);
+    font-size: 22px;
+  }
+
+  &:hover {
+    background:
+      rgba(244, 55, 104, 0.08);
+  }
+}
+
+.user-panel {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 92px;
+  padding: 17px 20px;
+  background:
+    var(--sidebar-background-light);
+}
+
+.user-avatar {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 47px;
+  height: 47px;
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-lime),
+      #35750b
+    );
+  font-size: 0.82rem;
+  font-weight: 850;
+
+  span {
+    margin: auto;
+  }
+}
+
+.user-information {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+
+  strong {
+    overflow: hidden;
+    color: var(--text-main);
+    font-size: 0.84rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  span {
+    color: var(--accent-lime);
+    font-size: 0.76rem;
+  }
+}
+
+/* No agregues margin-left al router outlet.
+   IonSplitPane distribuye el espacio automáticamente. */
+
+@media (max-width: 991px) {
+  .main-menu {
+    --width: 275px;
+    --min-width: 275px;
+    --max-width: 275px;
+  }
+}

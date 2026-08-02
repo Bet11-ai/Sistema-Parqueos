@@ -1,0 +1,549 @@
+<ion-content [fullscreen]="true">
+
+  <main class="tarifas-page">
+
+    <section class="page-heading">
+
+      <div>
+        <p class="eyebrow">
+          ADMINISTRACIÓN
+        </p>
+
+        <h1>Gestión de tarifas</h1>
+
+        <p>
+          Configure el monto por hora según el tipo
+          de vehículo.
+        </p>
+      </div>
+
+      <ion-button
+        class="new-button"
+        (click)="abrirFormularioNuevo()">
+
+        <ion-icon
+          name="add-outline"
+          slot="start">
+        </ion-icon>
+
+        Nueva tarifa
+
+      </ion-button>
+
+    </section>
+
+    <section class="summary-grid">
+
+      <article class="summary-card">
+
+        <div class="summary-icon total-icon">
+          <ion-icon name="pricetag-outline"></ion-icon>
+        </div>
+
+        <div>
+          <span>Total de tarifas</span>
+
+          <strong>
+            {{ tarifas.length }}
+          </strong>
+        </div>
+
+      </article>
+
+      <article class="summary-card">
+
+        <div class="summary-icon active-icon">
+          <ion-icon
+            name="checkmark-circle-outline">
+          </ion-icon>
+        </div>
+
+        <div>
+          <span>Tarifas activas</span>
+
+          <strong>
+            {{ totalActivas }}
+          </strong>
+        </div>
+
+      </article>
+
+      <article class="summary-card">
+
+        <div class="summary-icon inactive-icon">
+          <ion-icon
+            name="close-circle-outline">
+          </ion-icon>
+        </div>
+
+        <div>
+          <span>Tarifas inactivas</span>
+
+          <strong>
+            {{ totalInactivas }}
+          </strong>
+        </div>
+
+      </article>
+
+      <article class="summary-card">
+
+        <div class="summary-icon average-icon">
+          <ion-icon name="cash-outline"></ion-icon>
+        </div>
+
+        <div>
+          <span>Tarifa promedio</span>
+
+          <strong class="money-value">
+            {{ formatearMoneda(tarifaPromedio) }}
+          </strong>
+        </div>
+
+      </article>
+
+    </section>
+
+    <section
+      class="form-panel"
+      *ngIf="mostrarFormulario">
+
+      <div class="panel-heading">
+
+        <div>
+          <p class="panel-eyebrow">
+            {{
+              modoEdicion
+                ? 'MODIFICACIÓN'
+                : 'NUEVO REGISTRO'
+            }}
+          </p>
+
+          <h2>
+            {{
+              modoEdicion
+                ? 'Editar tarifa'
+                : 'Registrar tarifa'
+            }}
+          </h2>
+        </div>
+
+        <ion-button
+          fill="clear"
+          class="close-button"
+          (click)="cancelarFormulario()">
+
+          <ion-icon
+            name="close-circle-outline"
+            slot="icon-only">
+          </ion-icon>
+
+        </ion-button>
+
+      </div>
+
+      <form
+        [formGroup]="formulario"
+        (ngSubmit)="guardarTarifa()">
+
+        <div class="form-grid">
+
+          <div class="form-field">
+
+            <label>
+              Tipo de vehículo *
+            </label>
+
+            <ion-item
+              lines="none"
+              [class.invalid-field]="
+                campoInvalido('tipoVehiculoId')
+              ">
+
+              <ion-icon
+                name="pricetag-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-select
+                formControlName="tipoVehiculoId"
+                interface="popover"
+                placeholder="Seleccione un tipo">
+
+                <ion-select-option
+                  *ngFor="
+                    let tipo of tiposVehiculo
+                  "
+                  [value]="tipo.tipoVehiculoId">
+
+                  {{ tipo.descripcion }}
+
+                </ion-select-option>
+
+              </ion-select>
+
+            </ion-item>
+
+            <small
+              class="validation-message"
+              *ngIf="
+                campoInvalido('tipoVehiculoId')
+              ">
+
+              Debe seleccionar un tipo de vehículo.
+
+            </small>
+
+          </div>
+
+          <div class="form-field">
+
+            <label>
+              Monto por hora *
+            </label>
+
+            <ion-item
+              lines="none"
+              [class.invalid-field]="
+                campoInvalido('montoHora')
+              ">
+
+              <ion-icon
+                name="cash-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-input
+                type="number"
+                min="0.01"
+                step="0.01"
+                formControlName="montoHora"
+                placeholder="1200">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              class="validation-message"
+              *ngIf="campoInvalido('montoHora')">
+
+              El monto debe ser mayor que cero.
+
+            </small>
+
+          </div>
+
+          <div class="form-field form-field-wide">
+
+            <label>
+              Descripción *
+            </label>
+
+            <ion-item
+              lines="none"
+              [class.invalid-field]="
+                campoInvalido('descripcion')
+              ">
+
+              <ion-icon
+                name="time-outline"
+                slot="start">
+              </ion-icon>
+
+              <ion-input
+                formControlName="descripcion"
+                maxlength="100"
+                placeholder="Tarifa regular por hora">
+              </ion-input>
+
+            </ion-item>
+
+            <small
+              class="validation-message"
+              *ngIf="campoInvalido('descripcion')">
+
+              La descripción es obligatoria.
+
+            </small>
+
+          </div>
+
+          <div
+            class="form-field status-field"
+            *ngIf="modoEdicion">
+
+            <label>
+              Estado
+            </label>
+
+            <ion-item lines="none">
+
+              <ion-label>
+                {{
+                  formulario.get('activo')?.value
+                    ? 'Tarifa activa'
+                    : 'Tarifa inactiva'
+                }}
+              </ion-label>
+
+              <ion-toggle
+                formControlName="activo">
+              </ion-toggle>
+
+            </ion-item>
+
+          </div>
+
+        </div>
+
+        <div class="form-actions">
+
+          <ion-button
+            type="button"
+            fill="outline"
+            class="cancel-button"
+            [disabled]="guardando"
+            (click)="cancelarFormulario()">
+
+            Cancelar
+
+          </ion-button>
+
+          <ion-button
+            type="submit"
+            class="save-button"
+            [disabled]="guardando">
+
+            <ion-spinner
+              *ngIf="guardando"
+              name="crescent">
+            </ion-spinner>
+
+            <ion-icon
+              *ngIf="!guardando"
+              name="save-outline"
+              slot="start">
+            </ion-icon>
+
+            <span *ngIf="!guardando">
+              {{
+                modoEdicion
+                  ? 'Guardar cambios'
+                  : 'Registrar tarifa'
+              }}
+            </span>
+
+          </ion-button>
+
+        </div>
+
+      </form>
+
+    </section>
+
+    <section class="list-panel">
+
+      <div class="list-toolbar">
+
+        <div>
+          <p class="panel-eyebrow">
+            TARIFAS
+          </p>
+
+          <h2>Tarifas registradas</h2>
+
+          <span>
+            {{ tarifasFiltradas.length }}
+            resultado(s)
+          </span>
+        </div>
+
+        <div class="search-actions">
+
+          <ion-searchbar
+            placeholder="Buscar tarifa o tipo de vehículo"
+            debounce="250"
+            [value]="textoBusqueda"
+            (ionInput)="
+              textoBusqueda =
+                $any($event.target).value || '';
+              filtrarTarifas()
+            ">
+          </ion-searchbar>
+
+          <ion-button
+            fill="clear"
+            class="refresh-button"
+            (click)="cargarTarifas()">
+
+            <ion-icon
+              name="refresh-outline"
+              slot="icon-only">
+            </ion-icon>
+
+          </ion-button>
+
+        </div>
+
+      </div>
+
+      <div
+        class="loading-state"
+        *ngIf="cargando">
+
+        <ion-spinner name="crescent"></ion-spinner>
+
+        <p>
+          Cargando tarifas...
+        </p>
+
+      </div>
+
+      <div
+        class="empty-state"
+        *ngIf="
+          !cargando &&
+          tarifasFiltradas.length === 0
+        ">
+
+        <ion-icon name="pricetag-outline"></ion-icon>
+
+        <h3>
+          No se encontraron tarifas
+        </h3>
+
+        <p>
+          Registre una tarifa nueva o cambie
+          el criterio de búsqueda.
+        </p>
+
+      </div>
+
+      <div
+        class="tariffs-grid"
+        *ngIf="
+          !cargando &&
+          tarifasFiltradas.length > 0
+        ">
+
+        <article
+          class="tariff-card"
+          *ngFor="let tarifa of tarifasFiltradas"
+          [class.tariff-inactive]="
+            !tarifa.activo
+          ">
+
+          <div class="tariff-header">
+
+            <div class="tariff-icon">
+              <ion-icon name="cash-outline"></ion-icon>
+            </div>
+
+            <div class="tariff-title">
+
+              <h3>
+                {{ tarifa.descripcion }}
+              </h3>
+
+              <p>
+                {{ tarifa.tipoVehiculo }}
+              </p>
+
+            </div>
+
+            <ion-badge
+              [class.active-badge]="
+                tarifa.activo
+              "
+              [class.inactive-badge]="
+                !tarifa.activo
+              ">
+
+              {{
+                tarifa.activo
+                  ? 'Activa'
+                  : 'Inactiva'
+              }}
+
+            </ion-badge>
+
+          </div>
+
+          <div class="price-section">
+
+            <span>
+              Monto por hora
+            </span>
+
+            <strong>
+              {{ formatearMoneda(tarifa.montoHora) }}
+            </strong>
+
+            <small>
+              por cada hora de estacionamiento
+            </small>
+
+          </div>
+
+          <div class="tariff-information">
+
+            <div>
+              <span>Tipo de vehículo</span>
+
+              <strong>
+                {{ tarifa.tipoVehiculo }}
+              </strong>
+            </div>
+
+            <div>
+              <span>Descripción</span>
+
+              <strong>
+                {{ tarifa.descripcion }}
+              </strong>
+            </div>
+
+          </div>
+
+          <div class="tariff-actions">
+
+            <ion-button
+              fill="outline"
+              class="edit-button"
+              (click)="editarTarifa(tarifa)">
+
+              <ion-icon
+                name="create-outline"
+                slot="start">
+              </ion-icon>
+
+              Editar
+
+            </ion-button>
+
+            <ion-button
+              fill="clear"
+              class="delete-button"
+              [disabled]="!tarifa.activo"
+              (click)="desactivarTarifa(tarifa)">
+
+              <ion-icon
+                name="trash-outline"
+                slot="start">
+              </ion-icon>
+
+              Desactivar
+
+            </ion-button>
+
+          </div>
+
+        </article>
+
+      </div>
+
+    </section>
+
+  </main>
+
+</ion-content>

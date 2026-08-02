@@ -1,0 +1,485 @@
+:host {
+  --background-main: #101516;
+  --background-panel: #1c2325;
+  --background-panel-light: #252d2f;
+
+  --moss-green: #607d34;
+  --moss-green-light: #8bd51f;
+
+  --accent-turquoise: #11d8c4;
+  --accent-purple: #a66cf4;
+  --accent-yellow: #f0b51b;
+  --accent-pink: #f43768;
+
+  --text-main: #f4f7f3;
+  --text-muted: #9ca7a4;
+  --border-color: #384345;
+  --danger-color: #f43768;
+}
+
+ion-content {
+  --background: var(--background-main);
+}
+
+ion-toolbar {
+  --background: var(--background-panel);
+  --color: var(--text-main);
+  --border-color: var(--border-color);
+}
+
+.back-button,
+.refresh-button {
+  --color: var(--moss-green-light);
+}
+
+.clientes-page {
+  width: min(1400px, 100%);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 28px;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 24px;
+
+  .eyebrow {
+    margin: 0 0 7px;
+    color: var(--moss-green-light);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.17em;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+  }
+}
+
+.new-button,
+.save-button {
+  --background: var(--moss-green);
+  --background-hover: var(--moss-green-light);
+  --background-activated: #58673c;
+  --color: #ffffff;
+  --border-radius: 12px;
+
+  min-height: 46px;
+  font-weight: 750;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 19px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--background-panel);
+
+  span {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+
+  strong {
+    color: var(--text-main);
+    font-size: 1.55rem;
+  }
+}
+
+.summary-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 13px;
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      var(--moss-green-light),
+      var(--moss-green)
+    );
+  box-shadow:
+    0 8px 22px rgba(139, 213, 31, 0.15);
+
+  ion-icon {
+    font-size: 25px;
+  }
+
+  &.active {
+    background:
+      linear-gradient(
+        135deg,
+        #0c9588,
+        var(--accent-turquoise)
+      );
+    box-shadow:
+      0 8px 22px rgba(17, 216, 196, 0.14);
+  }
+
+  &.inactive {
+    background:
+      linear-gradient(
+        135deg,
+        #992344,
+        var(--accent-pink)
+      );
+    box-shadow:
+      0 8px 22px rgba(244, 55, 104, 0.14);
+  }
+}
+
+.form-panel,
+.list-panel {
+  padding: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background: var(--background-panel);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.22);
+}
+
+.form-panel {
+  margin-bottom: 24px;
+  animation: mostrarFormulario 180ms ease;
+}
+
+@keyframes mostrarFormulario {
+  from {
+    transform: translateY(-8px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.panel-header,
+.list-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
+  .eyebrow {
+    margin: 0 0 6px;
+    color: var(--moss-green-light);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 1.25rem;
+  }
+
+  p {
+    margin: 5px 0 0;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+}
+
+.close-button {
+  --color: var(--text-muted);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.form-field {
+  label {
+    display: block;
+    margin: 0 0 8px;
+    color: #dfe1dc;
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+
+  ion-item {
+    --background: var(--background-panel-light);
+    --color: var(--text-main);
+    --placeholder-color: #858b83;
+    --padding-start: 14px;
+    --inner-padding-end: 12px;
+
+    min-height: 54px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+
+    ion-icon {
+      color: var(--moss-green-light);
+    }
+
+    &:focus-within {
+      border-color: var(--moss-green-light);
+      box-shadow:
+        0 0 0 3px rgba(129, 148, 90, 0.12);
+    }
+  }
+}
+
+.form-field-wide {
+  grid-column: span 2;
+}
+
+.status-field ion-toggle {
+  --track-background-checked: var(--moss-green);
+  --handle-background-checked: #ffffff;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cancel-button {
+  --border-color: var(--border-color);
+  --color: var(--text-muted);
+  --border-radius: 12px;
+}
+
+.list-toolbar {
+  margin-bottom: 20px;
+
+  ion-searchbar {
+    --background: var(--background-panel-light);
+    --color: var(--text-main);
+    --placeholder-color: #8f958d;
+    --icon-color: var(--moss-green-light);
+    --clear-button-color: var(--text-muted);
+    --border-radius: 12px;
+
+    width: min(470px, 100%);
+    padding: 0;
+  }
+}
+
+.loading-state,
+.empty-state {
+  display: grid;
+  place-items: center;
+  padding: 54px 20px;
+  color: var(--text-muted);
+  text-align: center;
+
+  ion-spinner {
+    color: var(--moss-green-light);
+  }
+
+  ion-icon {
+    color: var(--moss-green-light);
+    font-size: 54px;
+  }
+
+  h3 {
+    margin: 13px 0 6px;
+    color: var(--text-main);
+  }
+
+  p {
+    max-width: 440px;
+    margin: 0;
+  }
+}
+
+.clients-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.client-card {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--background-panel-light);
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--moss-green);
+  }
+}
+
+.client-inactive {
+  opacity: 0.68;
+}
+
+.client-card-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 18px;
+}
+
+.client-avatar {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  color: #ffffff;
+  background:
+  linear-gradient(
+    135deg,
+    var(--accent-turquoise),
+    #087c70
+  );
+  font-size: 0.92rem;
+  font-weight: 850;
+}
+
+.client-title {
+  flex: 1;
+
+  h3 {
+    margin: 0 0 7px;
+    color: var(--text-main);
+    font-size: 1rem;
+  }
+}
+
+ion-badge {
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 0.66rem;
+}
+
+.active-badge {
+  color: #dce8cb;
+  background: rgba(102, 119, 68, 0.35);
+}
+
+.inactive-badge {
+  color: #d0d1ce;
+  background: rgba(100, 105, 102, 0.35);
+}
+
+.client-information {
+  display: grid;
+  gap: 10px;
+  flex: 1;
+}
+
+.information-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba(65, 70, 64, 0.6);
+
+  span {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+  }
+
+  strong {
+    max-width: 65%;
+    overflow-wrap: anywhere;
+    color: #e6e8e3;
+    font-size: 0.79rem;
+    text-align: right;
+  }
+}
+
+.client-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.edit-button {
+  --border-color: var(--accent-turquoise);
+  --color: var(--accent-turquoise);
+  --border-radius: 10px;
+}
+
+.delete-button {
+  --color: var(--accent-pink);
+}
+
+@media (max-width: 760px) {
+  .clientes-page {
+    padding: 18px;
+  }
+
+  .page-heading,
+  .list-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .new-button,
+  .list-toolbar ion-searchbar {
+    width: 100%;
+  }
+
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-field-wide {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 420px) {
+  .form-panel,
+  .list-panel {
+    padding: 18px;
+  }
+
+  .clients-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .client-actions {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,129 @@
+<ion-app>
+
+  <ion-split-pane
+    *ngIf="mostrarMenu"
+    contentId="contenido-principal"
+    when="lg">
+
+    <ion-menu
+      contentId="contenido-principal"
+      type="overlay"
+      class="main-menu">
+
+      <ion-content>
+
+        <aside class="sidebar">
+
+          <header class="sidebar-brand">
+
+            <div class="brand-logo">
+              <ion-icon
+                name="car-sport-outline">
+              </ion-icon>
+            </div>
+
+            <div class="brand-text">
+              <strong>SISTEMA</strong>
+              <span>DE PARQUEOS</span>
+            </div>
+
+          </header>
+
+          <nav class="sidebar-navigation">
+
+            <ion-list lines="none">
+
+              <ion-menu-toggle
+                autoHide="false"
+                *ngFor="
+                  let opcion of opcionesVisibles
+                ">
+
+                <ion-item
+                  button
+                  detail="false"
+                  [routerLink]="opcion.ruta"
+                  routerLinkActive="menu-item-active"
+                  [routerLinkActiveOptions]="{
+                    exact:
+                      opcion.ruta === '/dashboard'
+                  }"
+                  class="menu-item">
+
+                  <ion-icon
+                    slot="start"
+                    [name]="opcion.icono"
+                    [class]="opcion.claseColor">
+                  </ion-icon>
+
+                  <ion-label>
+                    {{ opcion.titulo }}
+                  </ion-label>
+
+                </ion-item>
+
+              </ion-menu-toggle>
+
+            </ion-list>
+
+          </nav>
+
+          <div class="sidebar-footer">
+
+            <button
+              type="button"
+              class="logout-menu-button"
+              (click)="cerrarSesion()">
+
+              <ion-icon
+                name="log-out-outline">
+              </ion-icon>
+
+              <span>Cerrar sesión</span>
+
+            </button>
+
+            <section class="user-panel">
+
+              <ion-avatar class="user-avatar">
+                <span>
+                  {{ inicialesUsuario }}
+                </span>
+              </ion-avatar>
+
+              <div class="user-information">
+
+                <strong>
+                  {{
+                    usuario?.nombreCompleto ||
+                    'Usuario'
+                  }}
+                </strong>
+
+                <span>
+                  {{ usuario?.rol || 'Sin rol' }}
+                </span>
+
+              </div>
+
+            </section>
+
+          </div>
+
+        </aside>
+
+      </ion-content>
+
+    </ion-menu>
+
+    <ion-router-outlet
+      id="contenido-principal">
+    </ion-router-outlet>
+
+  </ion-split-pane>
+
+  <ion-router-outlet
+    *ngIf="!mostrarMenu">
+  </ion-router-outlet>
+
+</ion-app>

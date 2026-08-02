@@ -1,0 +1,559 @@
+:host {
+  --background-main: #101516;
+  --background-panel: #1c2325;
+  --background-panel-light: #252d2f;
+  --background-panel-dark: #161d1f;
+  --border-color: #384345;
+
+  --accent-lime: #8bd51f;
+  --accent-green: #607d34;
+  --accent-turquoise: #11d8c4;
+  --accent-cyan: #21b9e8;
+  --accent-purple: #a66cf4;
+  --accent-yellow: #f0b51b;
+  --accent-pink: #f43768;
+
+  --text-main: #f4f7f3;
+  --text-muted: #9ca7a4;
+}
+
+ion-content {
+  --background: var(--background-main);
+}
+
+.tarifas-page {
+  width: min(1450px, 100%);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 24px;
+
+  .eyebrow {
+    margin: 0 0 7px;
+    color: var(--accent-purple);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.17em;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: clamp(1.9rem, 4vw, 2.7rem);
+  }
+
+  p {
+    margin: 8px 0 0;
+    color: var(--text-muted);
+  }
+}
+
+.new-button,
+.save-button {
+  --background:
+    linear-gradient(
+      135deg,
+      var(--accent-purple),
+      #6633a7
+    );
+
+  --background-hover: #b783fa;
+  --background-activated: #7442b5;
+  --color: #ffffff;
+  --border-radius: 12px;
+
+  min-height: 46px;
+  font-weight: 750;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 19px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--background-panel);
+
+  span {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+
+  strong {
+    color: var(--text-main);
+    font-size: 1.55rem;
+  }
+
+  .money-value {
+    font-size: 1.15rem;
+  }
+}
+
+.summary-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  color: #ffffff;
+
+  ion-icon {
+    font-size: 27px;
+  }
+}
+
+.total-icon {
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-purple),
+      #6633a7
+    );
+}
+
+.active-icon {
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-turquoise),
+      #087c70
+    );
+}
+
+.inactive-icon {
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-pink),
+      #8e1f3e
+    );
+}
+
+.average-icon {
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-yellow),
+      #9f7412
+    );
+}
+
+.form-panel,
+.list-panel {
+  padding: 24px;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background: var(--background-panel);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.22);
+}
+
+.form-panel {
+  margin-bottom: 24px;
+  border-color:
+    rgba(166, 108, 244, 0.36);
+}
+
+.panel-heading,
+.list-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+
+  h2 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 1.25rem;
+  }
+
+  span {
+    display: block;
+    margin-top: 5px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+}
+
+.panel-eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent-purple);
+  font-size: 0.69rem;
+  font-weight: 850;
+  letter-spacing: 0.15em;
+}
+
+.close-button {
+  --color: var(--text-muted);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.form-field {
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #dfe1dc;
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+
+  ion-item {
+    --background: var(--background-panel-light);
+    --color: var(--text-main);
+    --placeholder-color: #858b83;
+    --padding-start: 14px;
+    --inner-padding-end: 12px;
+
+    min-height: 55px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+
+    ion-icon {
+      color: var(--accent-purple);
+    }
+
+    ion-select {
+      width: 100%;
+    }
+
+    &:focus-within {
+      border-color: var(--accent-purple);
+      box-shadow:
+        0 0 0 3px
+        rgba(166, 108, 244, 0.11);
+    }
+  }
+}
+
+.form-field-wide {
+  grid-column: span 2;
+}
+
+.status-field ion-toggle {
+  --track-background-checked:
+    var(--accent-purple);
+
+  --handle-background-checked: #ffffff;
+}
+
+.invalid-field {
+  border-color:
+    var(--accent-pink) !important;
+}
+
+.validation-message {
+  display: block;
+  margin: 6px 0 0 4px;
+  color: var(--accent-pink);
+  font-size: 0.73rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.cancel-button {
+  --border-color: var(--border-color);
+  --color: var(--text-muted);
+  --border-radius: 12px;
+}
+
+.search-actions {
+  display: flex;
+  align-items: center;
+  width: min(520px, 100%);
+
+  ion-searchbar {
+    --background:
+      var(--background-panel-light);
+    --color: var(--text-main);
+    --placeholder-color: #8f958d;
+    --icon-color: var(--accent-purple);
+    --clear-button-color: var(--text-muted);
+    --border-radius: 12px;
+
+    flex: 1;
+    padding: 0;
+  }
+}
+
+.refresh-button {
+  --color: var(--accent-purple);
+}
+
+.loading-state,
+.empty-state {
+  display: grid;
+  place-items: center;
+  padding: 55px 20px;
+  color: var(--text-muted);
+  text-align: center;
+
+  ion-spinner {
+    color: var(--accent-purple);
+  }
+
+  ion-icon {
+    color: var(--accent-purple);
+    font-size: 55px;
+  }
+
+  h3 {
+    margin: 13px 0 6px;
+    color: var(--text-main);
+  }
+
+  p {
+    max-width: 430px;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.tariffs-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.tariff-card {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--background-panel-light);
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-purple);
+    box-shadow:
+      0 16px 34px rgba(0, 0, 0, 0.22);
+  }
+}
+
+.tariff-inactive {
+  opacity: 0.65;
+}
+
+.tariff-header {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.tariff-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  color: #ffffff;
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent-purple),
+      #6633a7
+    );
+
+  ion-icon {
+    font-size: 27px;
+  }
+}
+
+.tariff-title {
+  min-width: 0;
+  flex: 1;
+
+  h3 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 1rem;
+  }
+
+  p {
+    margin: 5px 0 0;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+  }
+}
+
+ion-badge {
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 0.64rem;
+}
+
+.active-badge {
+  color: #d9c5ff;
+  background:
+    rgba(166, 108, 244, 0.16);
+}
+
+.inactive-badge {
+  color: #ffc4d2;
+  background:
+    rgba(244, 55, 104, 0.15);
+}
+
+.price-section {
+  margin: 18px 0;
+  padding: 18px;
+  border: 1px solid
+    rgba(166, 108, 244, 0.22);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(166, 108, 244, 0.12),
+      rgba(28, 35, 37, 0.7)
+    );
+
+  span {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+
+  strong {
+    display: block;
+    margin: 6px 0;
+    color: var(--accent-purple);
+    font-size: 1.75rem;
+  }
+
+  small {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+  }
+}
+
+.tariff-information {
+  display: grid;
+  gap: 10px;
+  flex: 1;
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding-bottom: 9px;
+    border-bottom:
+      1px solid rgba(56, 67, 69, 0.7);
+  }
+
+  span {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+  }
+
+  strong {
+    max-width: 65%;
+    overflow-wrap: anywhere;
+    color: #e4e8e5;
+    font-size: 0.79rem;
+    text-align: right;
+  }
+}
+
+.tariff-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.edit-button {
+  --border-color: var(--accent-purple);
+  --color: var(--accent-purple);
+  --border-radius: 10px;
+}
+
+.delete-button {
+  --color: var(--accent-pink);
+}
+
+@media (max-width: 1150px) {
+  .summary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 780px) {
+  .tarifas-page {
+    padding: 19px;
+  }
+
+  .page-heading,
+  .list-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .new-button,
+  .search-actions {
+    width: 100%;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-field-wide {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 520px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-panel,
+  .list-panel {
+    padding: 18px;
+  }
+
+  .tariff-actions,
+  .form-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,354 @@
+<ion-content [fullscreen]="true">
+
+  <main class="dashboard-page">
+
+    <section class="dashboard-heading">
+
+      <div>
+        <p class="eyebrow">
+          PANEL PRINCIPAL
+        </p>
+
+        <h1>
+          Hola,
+          {{
+            usuario?.nombreCompleto ||
+            'Usuario'
+          }}
+        </h1>
+
+        <p class="heading-description">
+          Resumen general de la operación del
+          sistema de parqueos.
+        </p>
+      </div>
+
+      <ion-button
+        class="refresh-button"
+        [disabled]="cargando"
+        (click)="cargarResumen()">
+
+        <ion-icon
+          name="refresh-outline"
+          slot="start">
+        </ion-icon>
+
+        Actualizar
+
+      </ion-button>
+
+    </section>
+
+    <div
+      class="loading-panel"
+      *ngIf="cargando">
+
+      <ion-spinner name="crescent"></ion-spinner>
+      <span>Actualizando indicadores...</span>
+
+    </div>
+
+    <section class="metrics-grid">
+
+      <article class="metric-card metric-green">
+
+        <div class="metric-icon">
+          <ion-icon
+            name="car-sport-outline">
+          </ion-icon>
+        </div>
+
+        <div class="metric-information">
+          <span>Vehículos dentro</span>
+          <strong>
+            {{ resumen.vehiculosDentro }}
+          </strong>
+          <small>Actualmente estacionados</small>
+        </div>
+
+      </article>
+
+      <article class="metric-card metric-turquoise">
+
+        <div class="metric-icon">
+          <ion-icon
+            name="checkmark-circle-outline">
+          </ion-icon>
+        </div>
+
+        <div class="metric-information">
+          <span>Espacios disponibles</span>
+          <strong>
+            {{ resumen.espaciosDisponibles }}
+          </strong>
+          <small>
+            {{ porcentajeDisponible }}%
+            de disponibilidad
+          </small>
+        </div>
+
+      </article>
+
+      <article class="metric-card metric-yellow">
+
+        <div class="metric-icon">
+          <ion-icon name="grid-outline"></ion-icon>
+        </div>
+
+        <div class="metric-information">
+          <span>Ingresos de hoy</span>
+          <strong>
+            {{ resumen.ingresosHoy }}
+          </strong>
+          <small>Entradas registradas hoy</small>
+        </div>
+
+      </article>
+
+      <article class="metric-card metric-purple">
+
+        <div class="metric-icon">
+          <ion-icon name="cash-outline"></ion-icon>
+        </div>
+
+        <div class="metric-information">
+          <span>Facturación de hoy</span>
+          <strong class="money-value">
+            {{
+              formatearMoneda(
+                resumen.facturacionHoy
+              )
+            }}
+          </strong>
+          <small>Facturas emitidas hoy</small>
+        </div>
+
+      </article>
+
+    </section>
+
+    <section class="secondary-metrics">
+
+      <article>
+        <ion-icon name="trending-up-outline"></ion-icon>
+
+        <div>
+          <span>Facturación mensual</span>
+          <strong>
+            {{
+              formatearMoneda(
+                resumen.facturacionMes
+              )
+            }}
+          </strong>
+        </div>
+      </article>
+
+      <article>
+        <ion-icon name="people-outline"></ion-icon>
+
+        <div>
+          <span>Clientes activos</span>
+          <strong>
+            {{ resumen.clientesActivos }}
+          </strong>
+        </div>
+      </article>
+
+      <article>
+        <ion-icon name="car-sport-outline"></ion-icon>
+
+        <div>
+          <span>Vehículos activos</span>
+          <strong>
+            {{ resumen.vehiculosActivos }}
+          </strong>
+        </div>
+      </article>
+
+      <article>
+        <ion-icon name="business-outline"></ion-icon>
+
+        <div>
+          <span>Espacios registrados</span>
+          <strong>
+            {{ resumen.totalEspaciosActivos }}
+          </strong>
+        </div>
+      </article>
+
+    </section>
+
+    <section class="dashboard-content-grid">
+
+      <article class="dashboard-panel occupancy-panel">
+
+        <div class="panel-heading">
+          <div>
+            <p class="panel-eyebrow">
+              OCUPACIÓN ACTUAL
+            </p>
+
+            <h2>Estado de los espacios</h2>
+          </div>
+
+          <span class="percentage-badge">
+            {{ resumen.porcentajeOcupacion }}%
+          </span>
+        </div>
+
+        <div class="chart-container">
+          <canvas #graficoOcupacion></canvas>
+
+          <div class="chart-center">
+            <strong>
+              {{ resumen.espaciosOcupados }}
+            </strong>
+
+            <span>ocupados</span>
+          </div>
+        </div>
+
+        <div class="occupancy-details">
+
+          <div>
+            <span class="status-dot occupied"></span>
+            <small>Ocupados</small>
+            <strong>
+              {{ resumen.espaciosOcupados }}
+            </strong>
+          </div>
+
+          <div>
+            <span class="status-dot available"></span>
+            <small>Disponibles</small>
+            <strong>
+              {{ resumen.espaciosDisponibles }}
+            </strong>
+          </div>
+
+        </div>
+
+      </article>
+
+      <article class="dashboard-panel activity-panel">
+
+        <div class="panel-heading">
+          <div>
+            <p class="panel-eyebrow purple-text">
+              ACTIVIDAD
+            </p>
+
+            <h2>Movimientos recientes</h2>
+          </div>
+
+          <ion-icon
+            name="time-outline"
+            class="heading-icon">
+          </ion-icon>
+        </div>
+
+        <div
+          class="empty-activity"
+          *ngIf="
+            actividadReciente.length === 0
+          ">
+
+          <ion-icon
+            name="document-text-outline">
+          </ion-icon>
+
+          <h3>Sin actividad reciente</h3>
+
+          <p>
+            Los ingresos y salidas aparecerán
+            en esta sección.
+          </p>
+
+        </div>
+
+        <div
+          class="activity-list"
+          *ngIf="
+            actividadReciente.length > 0
+          ">
+
+          <article
+            class="activity-item"
+            *ngFor="
+              let actividad of actividadReciente
+            ">
+
+            <div class="activity-avatar">
+              {{
+                calcularIniciales(
+                  actividad.cliente
+                )
+              }}
+            </div>
+
+            <div class="activity-information">
+
+              <div class="activity-title">
+
+                <strong>
+                  {{ actividad.placa }}
+                </strong>
+
+                <span
+                  [class.status-active]="
+                    actividad.estado ===
+                    'Ingresado'
+                  "
+                  [class.status-finished]="
+                    actividad.estado !==
+                    'Ingresado'
+                  ">
+
+                  {{ actividad.estado }}
+
+                </span>
+
+              </div>
+
+              <p>
+                {{ actividad.cliente }}
+              </p>
+
+              <small>
+                {{ actividad.parqueo }}
+                ·
+                Espacio
+                {{ actividad.numeroEspacio }}
+              </small>
+
+              <small class="activity-date">
+                Entrada:
+                {{
+                  formatearFecha(
+                    actividad.fechaIngreso
+                  )
+                }}
+              </small>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </article>
+
+    </section>
+
+    <footer class="dashboard-footer">
+      <span>
+        © 2026 Sistema de Parqueos
+      </span>
+
+      <span>Versión 1.0.0</span>
+    </footer>
+
+  </main>
+
+</ion-content>

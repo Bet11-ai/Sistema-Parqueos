@@ -1,0 +1,38 @@
+// For information on how to create your own theme, please refer to:
+// https://ionicframework.com/docs/theming/
+:root {
+  --app-background: #101516;
+  --app-panel: #1c2325;
+  --app-panel-light: #252d2f;
+  --app-border: #384345;
+
+  --app-lime: #8bd51f;
+  --app-green: #607d34;
+  --app-turquoise: #11d8c4;
+  --app-cyan: #21b9e8;
+  --app-purple: #a66cf4;
+  --app-yellow: #f0b51b;
+  --app-pink: #f43768;
+
+  --app-text: #f4f7f3;
+  --app-muted: #9ca7a4;
+
+  --ion-color-primary: #7cb928;
+  --ion-color-primary-rgb: 124, 185, 40;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #6da323;
+  --ion-color-primary-tint: #89c33e;
+
+  --ion-background-color: #101516;
+  --ion-background-color-rgb: 16, 21, 22;
+
+  --ion-text-color: #f4f7f3;
+  --ion-text-color-rgb: 244, 247, 243;
+
+  --ion-toolbar-background: #192022;
+  --ion-toolbar-color: #f4f7f3;
+
+  --ion-item-background: #1c2325;
+  --ion-card-background: #1c2325;
+}
